@@ -9,11 +9,13 @@ import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import MenuList from "./components/menu/MenuList";
-import HomePage from "./pages/HomePage";
+import Dashboard from "./pages/Dashboard";
 
 // Lazy load heavy components
 const MenuManagement = lazy(() => import("./pages/MenuManagement"));
 const OrderList = lazy(() => import("./components/orders/OrderList"));
+const Analytics = lazy(() => import("./pages/Analytics"));
+const Customers = lazy(() => import("./pages/Customers"));
 
 // Public Pages
 import PublicHomePage from "./pages/public/HomePage";
@@ -26,7 +28,10 @@ import "./styles/App.css";
 
 // Loading component
 const LoadingFallback = () => (
-  <div className="loading">Loading...</div>
+  <div className="loading-container">
+    <div className="loading-spinner"></div>
+    <p>Loading...</p>
+  </div>
 );
 
 function App() {
@@ -52,7 +57,7 @@ function App() {
               path="/dashboard"
               element={
                 <ProtectedRoute>
-                  <HomePage />
+                  <Dashboard />
                 </ProtectedRoute>
               }
             />
@@ -73,6 +78,26 @@ function App() {
                 <ProtectedRoute requiredRole="staff">
                   <Suspense fallback={<LoadingFallback />}>
                     <OrderList />
+                  </Suspense>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/analytics"
+              element={
+                <ProtectedRoute requiredRole="staff">
+                  <Suspense fallback={<LoadingFallback />}>
+                    <Analytics />
+                  </Suspense>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/customers"
+              element={
+                <ProtectedRoute requiredRole="admin">
+                  <Suspense fallback={<LoadingFallback />}>
+                    <Customers />
                   </Suspense>
                 </ProtectedRoute>
               }

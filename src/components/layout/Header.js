@@ -52,8 +52,7 @@ const Header = () => {
     <header className={`modern-header ${scrolled ? 'scrolled' : ''}`}>
       <div className="header-container">
         <Link to={user ? "/dashboard" : "/"} className="logo-link" onClick={closeMobileMenu}>
-          {/* <img src="/logo.png" alt="EZ Order Logo" className="logo-image" /> */}
-          <span className="logo-text" color="white">EzOrder</span>
+          <span className="logo-text">EzOrder</span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -61,27 +60,27 @@ const Header = () => {
           {!user && isPublicPage ? (
             <>
               <Link to="/" className="nav-link" onClick={closeMobileMenu}>
-                <span className="nav-icon"></span>
+                <span className="nav-icon">🏠</span>
                 <span className="nav-text">Home</span>
               </Link>
               <Link to="/about" className="nav-link" onClick={closeMobileMenu}>
-                <span className="nav-icon"></span>
+                <span className="nav-icon">ℹ️</span>
                 <span className="nav-text">About</span>
               </Link>
               <Link to="/partners" className="nav-link" onClick={closeMobileMenu}>
-                <span className="nav-icon"></span>
+                <span className="nav-icon">🤝</span>
                 <span className="nav-text">Partners</span>
               </Link>
               <Link to="/contact" className="nav-link" onClick={closeMobileMenu}>
-                <span className="nav-icon"></span>
+                <span className="nav-icon">📧</span>
                 <span className="nav-text">Contact</span>
               </Link>
               <div className="nav-divider"></div>
               <Link to="/login" className="nav-link login-link" onClick={closeMobileMenu}>
-                <span className="nav-icon"></span>
+                <span className="nav-icon">🔑</span>
                 <span className="nav-text">Login</span>
               </Link>
-              <Link to="/register" className="btn-header btn-glow" onClick={closeMobileMenu}>
+              <Link to="/register" className="btn-header" onClick={closeMobileMenu}>
                 <span className="btn-icon">🚀</span>
                 Get Started
               </Link>
@@ -117,7 +116,11 @@ const Header = () => {
                   <div className="user-avatar">
                     <span>{user.name.charAt(0).toUpperCase()}</span>
                   </div>
-                  <span className="user-name">{user.name}</span>
+                  <div className="user-info-wrapper">
+                    <span className="user-name">{user.name}</span>
+                    <span className="user-email-small">{user.email}</span>
+                    <span className="user-role-badge">{user.role}</span>
+                  </div>
                   <svg className={`dropdown-arrow ${userDropdownOpen ? 'open' : ''}`} width="12" height="8" viewBox="0 0 12 8">
                     <path d="M1 1l5 5 5-5" stroke="currentColor" strokeWidth="2" fill="none"/>
                   </svg>
@@ -156,11 +159,11 @@ const Header = () => {
           ) : (
             <>
               <Link to="/login" className="nav-link login-link" onClick={closeMobileMenu}>
-                <span className="nav-icon"></span>
+                <span className="nav-icon">🔑</span>
                 <span className="nav-text">Login</span>
               </Link>
-              <Link to="/register" className="btn-header btn-glow" onClick={closeMobileMenu}>
-                <span className="btn-icon"></span>
+              <Link to="/register" className="btn-header" onClick={closeMobileMenu}>
+                <span className="btn-icon">🚀</span>
                 Register
               </Link>
             </>

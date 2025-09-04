@@ -49,6 +49,32 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const registerWithOTP = {
+    sendOTP: async (phoneNumber) => {
+      try {
+        const response = await authService.sendRegistrationOTP(phoneNumber);
+        return { success: true, data: response };
+      } catch (error) {
+        return {
+          success: false,
+          error: error.response?.data?.detail || "Failed to send OTP",
+        };
+      }
+    },
+    
+    verifyAndRegister: async (userData) => {
+      try {
+        const response = await authService.registerWithOTP(userData);
+        return { success: true, data: response };
+      } catch (error) {
+        return {
+          success: false,
+          error: error.response?.data?.detail || "Registration failed",
+        };
+      }
+    }
+  };
+
   const logout = () => {
     authService.logout();
     setUser(null);
@@ -76,6 +102,7 @@ export const AuthProvider = ({ children }) => {
     user,
     login,
     register,
+    registerWithOTP,
     logout,
     updateUserInfo,
     isStaff,
