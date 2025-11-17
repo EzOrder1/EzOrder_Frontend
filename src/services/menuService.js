@@ -52,7 +52,8 @@ const menuService = {
   },
 
   addCategory: async (name) => {
-    const response = await api.post("/menu/category", { name });
+    // Use explicit endpoint to avoid path conflicts with item routes
+    const response = await api.post("/menu/category/create", { name });
     return response.data;
   },
 

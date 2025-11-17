@@ -1,18 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { RiArrowRightUpLine } from 'react-icons/ri';
 import './LiveOrders.css';
 
 const LiveOrders = ({ orders }) => {
   const getStatusColor = (status) => {
     const colors = {
       confirmed: '#3498db',
-      preparing: '#f39c12',
-      ready: '#2ecc71',
-      out_for_delivery: '#e74c3c',
-      delivered: '#27ae60',
-      cancelled: '#95a5a6'
+      preparing: '#f59e0b',
+      ready: '#22c55e',
+      out_for_delivery: '#0ea5e9',
+      delivered: '#16a34a',
+      cancelled: '#94a3b8'
     };
-    return colors[status] || '#95a5a6';
+    return colors[status] || '#94a3b8';
   };
 
   const formatTime = (date) => {
@@ -27,7 +28,7 @@ const LiveOrders = ({ orders }) => {
       <div className="card-header">
         <h3>Live Orders</h3>
         <Link to="/orders" className="view-all-link">
-          View All →
+          View all <RiArrowRightUpLine />
         </Link>
       </div>
       

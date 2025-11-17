@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { RiRefreshLine } from 'react-icons/ri';
 import { useAuth } from '../contexts/AuthContext';
 import DashboardStats from '../components/dashboard/DashboardStats';
 import LiveOrders from '../components/dashboard/LiveOrders';
@@ -15,21 +16,38 @@ const Dashboard = () => {
   const [liveOrders, setLiveOrders] = useState([]);
   const [menuItems, setMenuItems] = useState([]);
   const [salesData, setSalesData] = useState([]);
+  const [lastUpdated, setLastUpdated] = useState(null);
 
   useEffect(() => {
     fetchDashboardData();
-    const interval = setInterval(fetchDashboardData, 30000); // Refresh every 30 seconds
-    return () => clearInterval(interval);
+
+    // Faster polling to keep stats closer to real-time
+    const interval = setInterval(fetchDashboardData, 8000);
+
+    // Refresh when tab regains focus (helps when user comes back)
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') {
+        fetchDashboardData();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', handleVisibility);
+    };
   }, []);
 
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
       
-      // Fetch orders and stats from backend
-      const [ordersResponse, statsResponse] = await Promise.all([
-        orderService.getAllOrders({ limit: 500 }),
-        orderService.getOrderStats()
+      // Fetch orders and stats from backend (respect API max limit of 100)
+      const [ordersResponse, statsResponse, liveResponse, metricsResponse] = await Promise.all([
+        orderService.getAllOrders({ limit: 100 }),
+        orderService.getOrderStats(),
+        orderService.getActiveOrders(),
+        orderService.getOrderDailyMetrics(7)
       ]);
 
       const orders = ordersResponse.orders || [];
@@ -68,15 +86,20 @@ const Dashboard = () => {
         statusCounts
       });
       
-      setLiveOrders(activeOrders);
+      // Prefer active orders from dedicated endpoint; fall back to filtered list
+      setLiveOrders(liveResponse || activeOrders);
       
       // Fetch menu items
       const menuResponse = await menuService.getAllItems({ limit: 10 });
       setMenuItems(menuResponse.items || []);
       
-      // Generate sales data for chart using real orders (last 7 days)
-      setSalesData(generateSalesData(orders));
-      
+      // Use backend daily metrics for chart (fallback to local calc if missing)
+      if (metricsResponse?.series) {
+        setSalesData(metricsResponse.series);
+      } else {
+        setSalesData(generateSalesData(orders));
+      }
+      setLastUpdated(new Date());
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
     } finally {
@@ -116,20 +139,39 @@ const Dashboard = () => {
     );
   }
 
+  const statusBadges = [
+    { key: 'confirmed', label: 'Confirmed', tone: '#22c55e' },
+    { key: 'preparing', label: 'Preparing', tone: '#f59e0b' },
+    { key: 'ready', label: 'Ready', tone: '#38bdf8' },
+    { key: 'out_for_delivery', label: 'On the way', tone: '#10b981' },
+  ];
+
   return (
     <div className="dashboard-container">
-      <div className="dashboard-header">
-        <div className="header-content">
-          <h1>Welcome back, {user?.name}!</h1>
-          <p className="header-subtitle">Here&apos;s what&apos;s happening with your restaurant today.</p>
-        </div>
-        <div className="header-actions">
-          <button className="btn-refresh" onClick={fetchDashboardData}>
-            Refresh
-          </button>
-          <span className="last-updated">
-            Last updated: {new Date().toLocaleTimeString()}
-          </span>
+      <div className="dashboard-hero">
+        <div className="dashboard-header">
+          <div className="header-content">
+            <p className="eyebrow">Dashboard overview</p>
+            <h1>Welcome back, {user?.name || 'there'}!</h1>
+            <p className="header-subtitle">Track live orders, revenue and menu health at a glance.</p>
+            <div className="status-pills">
+              {statusBadges.map((status) => (
+                <span key={status.key} className="status-pill">
+                  <span className="pill-dot" style={{ backgroundColor: status.tone }}></span>
+                  {stats?.statusCounts?.[status.key] ?? 0} {status.label}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div className="header-actions">
+            <div className="last-updated-chip">
+              <span className="dot-live"></span>
+              Updated {lastUpdated ? lastUpdated.toLocaleTimeString() : '--'}
+            </div>
+            <button className="btn-refresh" onClick={fetchDashboardData}>
+              <RiRefreshLine /> Refresh data
+            </button>
+          </div>
         </div>
       </div>
 

@@ -16,6 +16,16 @@ const orderService = {
     return response.data;
   },
 
+  getOrderDailyMetrics: async (days = 7) => {
+    const response = await api.get("/orders/metrics/daily", { params: { days } });
+    return response.data;
+  },
+
+  getCustomerSummaries: async () => {
+    const response = await api.get("/orders/customers");
+    return response.data;
+  },
+
   getMyOrders: async () => {
     const response = await api.get("/orders/my-orders");
     return response.data;

@@ -1,50 +1,76 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import orderService from '../services/orderService';
 import './Customers.css';
 
 const Customers = () => {
   const [customers, setCustomers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    // Fetch customers data
     fetchCustomers();
   }, []);
 
-  const fetchCustomers = () => {
-    // Mock data - replace with actual API call
-    setCustomers([
-      {
-        id: 1,
-        name: 'Sarah Ahmed',
-        email: 'sarah@example.com',
-        phone: '+92 300 1234567',
-        totalOrders: 25,
-        totalSpent: 15750,
-        lastOrder: '2025-09-01',
-        status: 'active'
-      },
-      {
-        id: 2,
-        name: 'Ali Hassan',
-        email: 'ali@example.com',
-        phone: '+92 321 9876543',
-        totalOrders: 18,
-        totalSpent: 12400,
-        lastOrder: '2025-08-28',
-        status: 'active'
-      },
-      // Add more mock customers
-    ]);
+  const aggregateFromOrders = (orders = []) => {
+    const map = new Map();
+    orders.forEach((order) => {
+      const key = order.phone_number || order.user_name || order.order_number;
+      if (!key) return;
+      const existing = map.get(key) || {
+        phone_number: order.phone_number || '',
+        name: order.user_name || 'Unknown',
+        total_orders: 0,
+        total_spent: 0,
+        last_order: null,
+      };
+      existing.total_orders += 1;
+      existing.total_spent += order.total || 0;
+      const created = order.created_at ? new Date(order.created_at) : null;
+      if (created && (!existing.last_order || created > new Date(existing.last_order))) {
+        existing.last_order = order.created_at;
+      }
+      map.set(key, existing);
+    });
+    return Array.from(map.values()).sort((a, b) => b.total_orders - a.total_orders);
   };
 
-  const filteredCustomers = customers.filter(customer => {
-    const matchesSearch = customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         customer.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         customer.phone.includes(searchTerm);
-    const matchesStatus = filterStatus === 'all' || customer.status === filterStatus;
-    return matchesSearch && matchesStatus;
-  });
+  const fetchCustomers = async () => {
+    setLoading(true);
+    try {
+      const data = await orderService.getCustomerSummaries();
+      setCustomers(data || []);
+      setError('');
+    } catch (err) {
+      // If endpoint not available (404), fallback to aggregating orders
+      if (err?.response?.status === 404) {
+        try {
+          const ordersResp = await orderService.getAllOrders({ limit: 100 });
+          const agg = aggregateFromOrders(ordersResp.orders || []);
+          setCustomers(agg);
+          setError('');
+        } catch (inner) {
+          setError('Failed to load customers');
+        }
+      } else {
+        setError('Failed to load customers');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filteredCustomers = useMemo(() => {
+    return customers.filter(customer => {
+      const matchesSearch =
+        (customer.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (customer.phone_number || '').includes(searchTerm);
+      const status = customer.total_orders > 0 ? 'active' : 'inactive';
+      const matchesStatus = filterStatus === 'all' || status === filterStatus;
+      return matchesSearch && matchesStatus;
+    });
+  }, [customers, searchTerm, filterStatus]);
 
   return (
     <div className="customers-container">
@@ -77,46 +103,36 @@ const Customers = () => {
         </div>
         <div className="stat-box">
           <h3>Active Customers</h3>
-          <p>{customers.filter(c => c.status === 'active').length}</p>
+          <p>{customers.filter(c => c.total_orders > 0).length}</p>
         </div>
         <div className="stat-box">
-          <h3>Average Order Value</h3>
-          <p>PKR 850</p>
+          <h3>Total Revenue</h3>
+          <p>PKR {customers.reduce((sum, c) => sum + (c.total_spent || 0), 0)}</p>
         </div>
       </div>
+
+      {loading && <div className="loading">Loading customers...</div>}
+      {error && <div className="error-message">{error}</div>}
 
       <div className="customers-table-wrapper">
         <table className="customers-table">
           <thead>
             <tr>
               <th>Customer</th>
-              <th>Contact</th>
+              <th>Phone</th>
               <th>Total Orders</th>
               <th>Total Spent</th>
               <th>Last Order</th>
-              <th>Status</th>
-              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {filteredCustomers.map(customer => (
-              <tr key={customer.id}>
+              <tr key={customer.phone_number}>
                 <td>{customer.name}</td>
-                <td>
-                  <div>{customer.email}</div>
-                  <div className="phone">{customer.phone}</div>
-                </td>
-                <td>{customer.totalOrders}</td>
-                <td>PKR {customer.totalSpent}</td>
-                <td>{new Date(customer.lastOrder).toLocaleDateString()}</td>
-                <td>
-                  <span className={`status-badge ${customer.status}`}>
-                    {customer.status}
-                  </span>
-                </td>
-                <td>
-                  <button className="action-btn">View Details</button>
-                </td>
+                <td className="phone">{customer.phone_number}</td>
+                <td>{customer.total_orders}</td>
+                <td>PKR {customer.total_spent}</td>
+                <td>{customer.last_order ? new Date(customer.last_order).toLocaleDateString() : '—'}</td>
               </tr>
             ))}
           </tbody>

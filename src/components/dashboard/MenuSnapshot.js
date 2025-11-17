@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { RiArrowRightSLine } from 'react-icons/ri';
 import './MenuSnapshot.css';
 
 const MenuSnapshot = ({ items }) => {
@@ -8,7 +9,7 @@ const MenuSnapshot = ({ items }) => {
       <div className="card-header">
         <h3>Menu Quick View</h3>
         <Link to="/menu/manage" className="manage-link">
-          Manage →
+          Manage <RiArrowRightSLine />
         </Link>
       </div>
       
@@ -20,7 +21,7 @@ const MenuSnapshot = ({ items }) => {
             <div key={item.id} className="menu-item-row">
               <div className="item-info">
                 <h4>{item.name}</h4>
-                <p className="item-category">{item.category}</p>
+                <p className="item-category">{item.category || 'Uncategorised'}</p>
               </div>
               <div className="item-meta">
                 <span className="item-price">PKR {item.price}</span>
