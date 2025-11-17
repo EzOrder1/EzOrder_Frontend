@@ -51,8 +51,23 @@ const menuService = {
     return response.data;
   },
 
+  addCategory: async (name) => {
+    const response = await api.post("/menu/category", { name });
+    return response.data;
+  },
+
+  deleteCategory: async (name) => {
+    const response = await api.delete("/menu/category", { data: { name } });
+    return response.data;
+  },
+
   resetMenu: async () => {
     const response = await api.post("/menu/reset");
+    return response.data;
+  },
+
+  deleteCategory: async (name) => {
+    const response = await api.delete("/menu/category", { data: { name } });
     return response.data;
   },
 };

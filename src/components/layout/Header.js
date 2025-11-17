@@ -1,5 +1,20 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import {
+  RiHome5Line,
+  RiInformationLine,
+  RiTeamLine,
+  RiMailLine,
+  RiLoginCircleLine,
+  RiArrowRightLine,
+  RiDashboardLine,
+  RiRestaurantLine,
+  RiFileList3Line,
+  RiSettings3Line,
+  RiUserLine,
+  RiSettings5Line,
+  RiLogoutCircleRLine,
+} from "react-icons/ri";
 import { useAuth } from "../../contexts/AuthContext";
 import './Header.css';
 
@@ -60,49 +75,49 @@ const Header = () => {
           {!user && isPublicPage ? (
             <>
               <Link to="/" className="nav-link" onClick={closeMobileMenu}>
-                <span className="nav-icon">🏠</span>
+                <RiHome5Line className="nav-icon" />
                 <span className="nav-text">Home</span>
               </Link>
               <Link to="/about" className="nav-link" onClick={closeMobileMenu}>
-                <span className="nav-icon">ℹ️</span>
+                <RiInformationLine className="nav-icon" />
                 <span className="nav-text">About</span>
               </Link>
               <Link to="/partners" className="nav-link" onClick={closeMobileMenu}>
-                <span className="nav-icon">🤝</span>
+                <RiTeamLine className="nav-icon" />
                 <span className="nav-text">Partners</span>
               </Link>
               <Link to="/contact" className="nav-link" onClick={closeMobileMenu}>
-                <span className="nav-icon">📧</span>
+                <RiMailLine className="nav-icon" />
                 <span className="nav-text">Contact</span>
               </Link>
               <div className="nav-divider"></div>
               <Link to="/login" className="nav-link login-link" onClick={closeMobileMenu}>
-                <span className="nav-icon">🔑</span>
+                <RiLoginCircleLine className="nav-icon" />
                 <span className="nav-text">Login</span>
               </Link>
               <Link to="/register" className="btn-header" onClick={closeMobileMenu}>
-                <span className="btn-icon">🚀</span>
+                <RiArrowRightLine className="btn-icon" />
                 Get Started
               </Link>
             </>
           ) : user ? (
             <>
               <Link to="/dashboard" className="nav-link" onClick={closeMobileMenu}>
-                <span className="nav-icon">📊</span>
+                <RiDashboardLine className="nav-icon" />
                 <span className="nav-text">Dashboard</span>
               </Link>
               <Link to="/menu" className="nav-link" onClick={closeMobileMenu}>
-                <span className="nav-icon">🍕</span>
+                <RiRestaurantLine className="nav-icon" />
                 <span className="nav-text">Menu</span>
               </Link>
               {isStaff() && (
                 <>
                   <Link to="/orders" className="nav-link" onClick={closeMobileMenu}>
-                    <span className="nav-icon">📋</span>
+                    <RiFileList3Line className="nav-icon" />
                     <span className="nav-text">Orders</span>
                   </Link>
                   <Link to="/menu/manage" className="nav-link" onClick={closeMobileMenu}>
-                    <span className="nav-icon">⚙️</span>
+                    <RiSettings3Line className="nav-icon" />
                     <span className="nav-text">Manage</span>
                   </Link>
                 </>
@@ -140,16 +155,16 @@ const Header = () => {
                     </div>
                     <div className="dropdown-divider"></div>
                     <Link to="/profile" className="dropdown-item" onClick={() => { setUserDropdownOpen(false); closeMobileMenu(); }}>
-                      <span className="dropdown-icon">👤</span>
+                      <RiUserLine className="dropdown-icon" />
                       My Profile
                     </Link>
                     <Link to="/settings" className="dropdown-item" onClick={() => { setUserDropdownOpen(false); closeMobileMenu(); }}>
-                      <span className="dropdown-icon">⚙️</span>
+                      <RiSettings5Line className="dropdown-icon" />
                       Settings
                     </Link>
                     <div className="dropdown-divider"></div>
                     <button onClick={handleLogout} className="dropdown-item logout">
-                      <span className="dropdown-icon">🚪</span>
+                      <RiLogoutCircleRLine className="dropdown-icon" />
                       Logout
                     </button>
                   </div>
@@ -159,11 +174,11 @@ const Header = () => {
           ) : (
             <>
               <Link to="/login" className="nav-link login-link" onClick={closeMobileMenu}>
-                <span className="nav-icon">🔑</span>
+                <RiLoginCircleLine className="nav-icon" />
                 <span className="nav-text">Login</span>
               </Link>
               <Link to="/register" className="btn-header" onClick={closeMobileMenu}>
-                <span className="btn-icon">🚀</span>
+                <RiArrowRightLine className="btn-icon" />
                 Register
               </Link>
             </>

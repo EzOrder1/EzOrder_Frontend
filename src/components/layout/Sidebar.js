@@ -1,11 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import {
+  RiDashboardLine,
+  RiRestaurantLine,
+  RiFolder2Line,
+  RiFileList3Line,
+  RiUserSmileLine,
+  RiBarChart2Line,
+  RiSettings3Line,
+  RiMenuFill,
+  RiMenuFoldFill,
+} from 'react-icons/ri';
 import './Sidebar.css';
 
 const Sidebar = ({ isCollapsed, toggleSidebar }) => {
   const location = useLocation();
-  const { user, isStaff, isAdmin } = useAuth();
+  const { user } = useAuth();
   const [activeItem, setActiveItem] = useState('');
 
   useEffect(() => {
@@ -15,43 +26,49 @@ const Sidebar = ({ isCollapsed, toggleSidebar }) => {
   const menuItems = [
     {
       path: '/dashboard',
-      icon: '📊',
+      icon: <RiDashboardLine />,
       label: 'Dashboard',
-      roles: ['customer', 'staff', 'admin']
+      roles: ['customer', 'staff', 'admin'],
     },
     {
       path: '/menu/manage',
-      icon: '🍴',
+      icon: <RiRestaurantLine />,
       label: 'Menu Management',
-      roles: ['staff', 'admin']
+      roles: ['staff', 'admin'],
+    },
+    {
+      path: '/categories',
+      icon: <RiFolder2Line />,
+      label: 'Category Management',
+      roles: ['staff', 'admin'],
     },
     {
       path: '/orders',
-      icon: '🛒',
+      icon: <RiFileList3Line />,
       label: 'Order List',
-      roles: ['staff', 'admin']
+      roles: ['staff', 'admin'],
     },
     {
       path: '/customers',
-      icon: '👥',
+      icon: <RiUserSmileLine />,
       label: 'Customers',
-      roles: ['admin']
+      roles: ['admin'],
     },
     {
       path: '/analytics',
-      icon: '📈',
+      icon: <RiBarChart2Line />,
       label: 'Analytics',
-      roles: ['staff', 'admin']
+      roles: ['staff', 'admin'],
     },
     {
       path: '/settings',
-      icon: '⚙️',
+      icon: <RiSettings3Line />,
       label: 'Settings',
-      roles: ['customer', 'staff', 'admin']
-    }
+      roles: ['customer', 'staff', 'admin'],
+    },
   ];
 
-  const filteredMenuItems = menuItems.filter(item => 
+  const filteredMenuItems = menuItems.filter((item) =>
     item.roles.includes(user?.role || 'customer')
   );
 
@@ -60,10 +77,12 @@ const Sidebar = ({ isCollapsed, toggleSidebar }) => {
       <div className="sidebar-header">
         <Link to="/dashboard" className="sidebar-logo">
           {!isCollapsed && <span className="logo-text">EzOrder</span>}
-          {isCollapsed && <span className="logo-icon">🍕</span>}
+          {isCollapsed && <span className="logo-icon">EZ</span>}
         </Link>
         <button className="sidebar-toggle" onClick={toggleSidebar}>
-          <span className="toggle-icon">{isCollapsed ? '→' : '←'}</span>
+          <span className="toggle-icon">
+            {isCollapsed ? <RiMenuFill /> : <RiMenuFoldFill />}
+          </span>
         </button>
       </div>
 

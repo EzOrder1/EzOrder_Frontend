@@ -3,6 +3,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import orderService from "../../services/orderService";
 import OrderDetails from "./OrderDetails";
 import { ORDER_STATUS, ORDER_STATUS_DISPLAY } from "../../utils/constants";
+import "./OrderList.css";
 
 const OrderList = () => {
   const { user } = useAuth();

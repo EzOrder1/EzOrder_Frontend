@@ -91,6 +91,38 @@ body {
   100% { transform: rotate(360deg); }
 }
 
+/* Responsive Layout Tweaks */
+@media (max-width: 1200px) {
+  :root {
+    --sidebar-width: 220px;
+    --sidebar-collapsed-width: 72px;
+  }
+  .dashboard-container {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .dashboard-container {
+    padding: 1.25rem;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --sidebar-width: 0px;
+    --sidebar-collapsed-width: 0px;
+    --header-height: 64px;
+  }
+  .main-content.with-sidebar,
+  .main-content.with-sidebar.sidebar-collapsed {
+    margin-left: 0;
+  }
+  .dashboard-container {
+    padding: 1rem;
+  }
+}
+
 /* Card Styles */
 .card {
   background: var(--card-bg);

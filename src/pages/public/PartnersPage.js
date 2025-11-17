@@ -1,41 +1,55 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import {
+  RiWhatsappFill,
+  RiSpeedFill,
+  RiDashboard2Line,
+  RiShieldCheckLine,
+  RiSparkling2Fill,
+  RiMoneyDollarCircleLine,
+  RiUserAddFill,
+  RiStore2Line,
+  RiChatCheckLine,
+  RiCustomerService2Line,
+  RiCheckLine,
+  RiClipboardLine,
+} from 'react-icons/ri';
 import './PublicPages.css';
 
 const PartnersPage = () => {
   const benefits = [
     {
-      icon: "📲",
+      icon: RiWhatsappFill,
       title: "WhatsApp Integration",
       description: "Customers can order directly via chat - no app downloads required",
       color: "#25D366"
     },
     {
-      icon: "⚡",
+      icon: RiSpeedFill,
       title: "Faster Order Management",
       description: "No missed calls or messy slips - everything organized digitally",
       color: "#FF6B6B"
     },
     {
-      icon: "📊",
+      icon: RiDashboard2Line,
       title: "Dashboard & Analytics",
       description: "Track sales, menu items, and performance with real-time insights",
       color: "#4ECDC4"
     },
     {
-      icon: "🤝",
+      icon: RiShieldCheckLine,
       title: "Customer Trust",
       description: "Easy ordering increases loyalty and repeat customers",
       color: "#45B7D1"
     },
     {
-      icon: "💡",
+      icon: RiSparkling2Fill,
       title: "Low Setup, High Impact",
       description: "Simple onboarding, no complex training - start earning more today",
       color: "#F7B731"
     },
     {
-      icon: "💰",
+      icon: RiMoneyDollarCircleLine,
       title: "Zero Commission",
       description: "Keep 100% of your earnings - we charge a simple monthly fee, no hidden costs",
       color: "#00BE26"
@@ -47,25 +61,25 @@ const PartnersPage = () => {
       number: 1,
       title: "Sign Up",
       description: "Register as a restaurant partner",
-      icon: "✍️"
+      icon: RiUserAddFill
     },
     {
       number: 2,
       title: "Setup Menu",
       description: "Upload menu items with prices",
-      icon: "📋"
+      icon: RiClipboardLine
     },
     {
       number: 3,
       title: "Go Live",
       description: "Start receiving orders via website & WhatsApp",
-      icon: "🚀"
+      icon: RiWhatsappFill
     },
     {
       number: 4,
       title: "Manage Orders",
       description: "Track and grow with our dashboard",
-      icon: "📈"
+      icon: RiDashboard2Line
     }
   ];
 
@@ -98,25 +112,25 @@ const PartnersPage = () => {
 
   const partnershipModels = [
     {
-      icon: "🛒",
+      icon: RiStore2Line,
       title: "Small Restaurants",
       description: "Perfect for local eateries and family restaurants",
       features: ["Basic dashboard", "WhatsApp ordering", "Customer management"]
     },
     {
-      icon: "🍔",
+      icon: RiSpeedFill,
       title: "Fast Food Chains",
       description: "Ideal for quick service restaurants",
       features: ["Multi-branch support", "Real-time analytics", "Bulk order handling"]
     },
     {
-      icon: "🍴",
+      icon: RiChatCheckLine,
       title: "Cafes & Bakeries",
       description: "Great for coffee shops and bakeries",
       features: ["Pre-order system", "Special items", "Loyalty programs"]
     },
     {
-      icon: "🍕",
+      icon: RiCustomerService2Line,
       title: "Cloud Kitchens",
       description: "Built for delivery-only businesses",
       features: ["Virtual brands", "Menu optimization", "Delivery integration"]
@@ -193,7 +207,7 @@ const PartnersPage = () => {
               <div className="step-connector" />
               <div className="step-content">
                 <div className="step-number">{step.number}</div>
-                <div className="step-icon">{step.icon}</div>
+                <div className="step-icon"><step.icon /></div>
                 <h3>{step.title}</h3>
                 <p>{step.description}</p>
               </div>
@@ -235,12 +249,12 @@ const PartnersPage = () => {
         <div className="models-grid">
           {partnershipModels.map((model, index) => (
             <div key={index} className="model-card">
-              <div className="model-icon">{model.icon}</div>
+              <div className="model-icon"><model.icon /></div>
               <h3>{model.title}</h3>
               <p>{model.description}</p>
               <ul className="model-features">
                 {model.features.map((feature, idx) => (
-                  <li key={idx}>✓ {feature}</li>
+                  <li key={idx}><RiCheckLine /> {feature}</li>
                 ))}
               </ul>
             </div>
@@ -253,32 +267,32 @@ const PartnersPage = () => {
         <div className="showcase-content">
           <div className="showcase-text">
             <h2>Everything You Need to Succeed</h2>
-            <div className="feature-list">
-              <div className="feature-item">
-                <span className="feature-check">✓</span>
-                <span>Real-time order notifications</span>
+              <div className="feature-list">
+                <div className="feature-item">
+                <span className="feature-check"><RiCheckLine /></span>
+                  <span>Real-time order notifications</span>
+                </div>
+                <div className="feature-item">
+                <span className="feature-check"><RiCheckLine /></span>
+                  <span>Multi-language support</span>
+                </div>
+                <div className="feature-item">
+                <span className="feature-check"><RiCheckLine /></span>
+                  <span>Inventory management</span>
+                </div>
+                <div className="feature-item">
+                <span className="feature-check"><RiCheckLine /></span>
+                  <span>Customer analytics</span>
+                </div>
+                <div className="feature-item">
+                <span className="feature-check"><RiCheckLine /></span>
+                  <span>24/7 support</span>
+                </div>
+                <div className="feature-item">
+                <span className="feature-check"><RiCheckLine /></span>
+                  <span>No commission on orders</span>
+                </div>
               </div>
-              <div className="feature-item">
-                <span className="feature-check">✓</span>
-                <span>Multi-language support</span>
-              </div>
-              <div className="feature-item">
-                <span className="feature-check">✓</span>
-                <span>Inventory management</span>
-              </div>
-              <div className="feature-item">
-                <span className="feature-check">✓</span>
-                <span>Customer analytics</span>
-              </div>
-              <div className="feature-item">
-                <span className="feature-check">✓</span>
-                <span>24/7 support</span>
-              </div>
-              <div className="feature-item">
-                <span className="feature-check">✓</span>
-                <span>No commission on orders</span>
-              </div>
-            </div>
           </div>
           <div className="showcase-image">
             <img 

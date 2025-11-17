@@ -447,4 +447,22 @@
     height: 1px;
     margin: 0.5rem 0;
   }
+
+  .header-container {
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .desktop-nav {
+    width: 85%;
+    max-width: 260px;
+    padding: 1.5rem;
+  }
+  .logo-text {
+    font-size: 1.4rem;
+  }
+  .btn-header {
+    padding: 0.6rem 1rem;
+  }
 }

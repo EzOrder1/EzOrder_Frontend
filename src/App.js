@@ -1,7 +1,12 @@
 import React, { lazy, Suspense } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { AuthProvider } from "./contexts/AuthContext";
 import Layout from "./components/layout/Layout";
 import NotificationManager from "./components/notifications/NotificationManager";
@@ -10,21 +15,21 @@ import Register from "./components/auth/Register";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import MenuList from "./components/menu/MenuList";
 import Dashboard from "./pages/Dashboard";
-
-// Lazy load heavy components
-const MenuManagement = lazy(() => import("./pages/MenuManagement"));
-const OrderList = lazy(() => import("./components/orders/OrderList"));
-const Analytics = lazy(() => import("./pages/Analytics"));
-const Customers = lazy(() => import("./pages/Customers"));
-
-// Public Pages
+// Public Pages - MOVED TO TOP
 import PublicHomePage from "./pages/public/HomePage";
 import About from "./pages/public/AboutPage";
 import Partners from "./pages/public/PartnersPage";
 import Contact from "./pages/public/ContactPage";
 import PrivacyPolicy from "./pages/public/PrivacyPage";
-
+// Styles - MOVED TO TOP
 import "./styles/App.css";
+
+// NOW we can have lazy loading AFTER all imports
+const MenuManagement = lazy(() => import("./pages/MenuManagement"));
+const OrderList = lazy(() => import("./components/orders/OrderList"));
+const Analytics = lazy(() => import("./pages/Analytics"));
+const Customers = lazy(() => import("./pages/Customers"));
+const Categories = lazy(() => import("./pages/Categories"));
 
 // Loading component
 const LoadingFallback = () => (
@@ -68,6 +73,16 @@ function App() {
                 <ProtectedRoute requiredRole="staff">
                   <Suspense fallback={<LoadingFallback />}>
                     <MenuManagement />
+                  </Suspense>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/categories"
+              element={
+                <ProtectedRoute requiredRole="staff">
+                  <Suspense fallback={<LoadingFallback />}>
+                    <Categories />
                   </Suspense>
                 </ProtectedRoute>
               }

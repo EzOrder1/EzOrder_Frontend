@@ -1,29 +1,43 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import {
+  RiChatCheckLine,
+  RiShieldCheckLine,
+  RiLightbulbFlashLine,
+  RiEmotionHappyLine,
+  RiSendPlaneLine,
+  RiEyeLine,
+  RiUserSmileLine,
+  RiStore2Line,
+  RiSmartphoneLine,
+  RiWhatsappFill,
+  RiTranslate,
+  RiTimeLine,
+} from 'react-icons/ri';
 import './PublicPages.css';
 
 const AboutPage = () => {
   const coreValues = [
     {
-      icon: "⚡",
+      icon: RiChatCheckLine,
       title: "Simplicity",
       description: "We believe ordering food should be as simple as sending a message",
       color: "#FF6B6B"
     },
     {
-      icon: "🤝",
+      icon: RiShieldCheckLine,
       title: "Trust",
       description: "Building reliable relationships with customers and restaurants",
       color: "#4ECDC4"
     },
     {
-      icon: "🚀",
+      icon: RiLightbulbFlashLine,
       title: "Innovation",
       description: "Leveraging technology to create seamless experiences",
       color: "#45B7D1"
     },
     {
-      icon: "🍴",
+      icon: RiEmotionHappyLine,
       title: "Customer Satisfaction",
       description: "Your happiness is our primary goal",
       color: "#F7B731"
@@ -58,10 +72,10 @@ const AboutPage = () => {
   ];
 
   const benefits = [
-    { icon: "✅", text: "No app downloads required" },
-    { icon: "💬", text: "WhatsApp integration" },
-    { icon: "🌐", text: "Multi-language support" },
-    { icon: "⏱️", text: "24/7 availability" }
+    { icon: RiSmartphoneLine, text: "No app downloads required" },
+    { icon: RiWhatsappFill, text: "WhatsApp integration" },
+    { icon: RiTranslate, text: "Multi-language support" },
+    { icon: RiTimeLine, text: "24/7 availability" }
   ];
 
   return (
@@ -112,12 +126,12 @@ const AboutPage = () => {
       <section className="mission-vision">
         <div className="mission-vision-container">
           <div className="mission-card">
-            <div className="card-icon">🎯</div>
+            <div className="card-icon"><RiSendPlaneLine /></div>
             <h3>Our Mission</h3>
             <p>To simplify food ordering for restaurants and customers with reliable technology.</p>
           </div>
           <div className="vision-card">
-            <div className="card-icon">🌟</div>
+            <div className="card-icon"><RiEyeLine /></div>
             <h3>Our Vision</h3>
             <p>A world where ordering food is as easy as sending a message.</p>
           </div>
@@ -129,7 +143,7 @@ const AboutPage = () => {
         <h2>Who We Serve</h2>
         <div className="serve-container">
           <div className="serve-card customers">
-            <div className="serve-icon">👥</div>
+            <div className="serve-icon"><RiUserSmileLine /></div>
             <h3>For Customers</h3>
             <p>Order food via website or WhatsApp in seconds</p>
             <ul>
@@ -140,7 +154,7 @@ const AboutPage = () => {
             </ul>
           </div>
           <div className="serve-card restaurants">
-            <div className="serve-icon">🏪</div>
+            <div className="serve-icon"><RiStore2Line /></div>
             <h3>For Restaurants</h3>
             <p>Manage menus, orders, and customers easily in one place</p>
             <ul>
@@ -160,7 +174,7 @@ const AboutPage = () => {
           {coreValues.map((value, index) => (
             <div key={index} className="value-card" data-aos="fade-up" data-aos-delay={index * 100}>
               <div className="value-icon" style={{ backgroundColor: value.color }}>
-                <span>{value.icon}</span>
+                <value.icon />
               </div>
               <h3>{value.title}</h3>
               <p>{value.description}</p>
@@ -191,17 +205,17 @@ const AboutPage = () => {
         <div className="benefits-list">
           {benefits.map((benefit, index) => (
             <div key={index} className="benefit-item">
-              <span className="benefit-icon">{benefit.icon}</span>
+              <span className="benefit-icon"><benefit.icon /></span>
               <span className="benefit-text">{benefit.text}</span>
             </div>
           ))}
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="about-cta">
-        <div className="cta-content">
-          <h2>Whether you're hungry or running a restaurant – EZ Order is here for you.</h2>
+        {/* CTA Section */}
+        <section className="about-cta">
+          <div className="cta-content">
+          <h2>Whether you're hungry or running a restaurant, EZ Order is here for you.</h2>
           <div className="cta-buttons">
             <a 
               href="https://wa.me/923001234567?text=Hi,%20I%20want%20to%20order%20food"

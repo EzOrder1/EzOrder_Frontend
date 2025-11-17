@@ -26,36 +26,46 @@ const Dashboard = () => {
     try {
       setLoading(true);
       
-      // Fetch orders
-      const ordersResponse = await orderService.getAllOrders();
+      // Fetch orders and stats from backend
+      const [ordersResponse, statsResponse] = await Promise.all([
+        orderService.getAllOrders({ limit: 500 }),
+        orderService.getOrderStats()
+      ]);
+
       const orders = ordersResponse.orders || [];
+      const statusCounts = statsResponse?.by_status || {};
+      const totalOrders = statsResponse?.total_orders || orders.length;
       
       // Calculate stats
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       
-      const todayOrders = orders.filter(order => 
-        new Date(order.created_at) >= today
-      );
+      const todayOrders = orders.filter(order => new Date(order.created_at) >= today);
+      const todayRevenue = todayOrders.reduce((sum, order) => sum + (order.total || 0), 0);
+      const activeOrders = orders.filter(order => !['delivered', 'cancelled'].includes(order.status));
+
+      // Top selling item from actual order lines
+      const itemCounts = {};
+      orders.forEach(order => {
+        (order.items || []).forEach(item => {
+          const key = item.name;
+          itemCounts[key] = (itemCounts[key] || 0) + (item.quantity || 0);
+        });
+      });
+      const topItem = Object.entries(itemCounts).sort((a, b) => b[1] - a[1])[0]?.[0] || 'No orders yet';
       
-      const todayRevenue = todayOrders.reduce((sum, order) => sum + order.total, 0);
-      
-      // Get active orders
-      const activeOrders = orders.filter(order => 
-        !['delivered', 'cancelled'].includes(order.status)
-      );
-      
-      // Calculate top selling item (mock data for now)
-      const topItem = 'Pepperoni Pizza';
-      
-      // Get new customers (mock data)
-      const newCustomers = Math.floor(Math.random() * 10) + 5;
+      // New customers today (unique phone numbers)
+      const newCustomerSet = new Set(todayOrders.map(o => o.phone_number));
+      const newCustomers = newCustomerSet.size;
       
       setStats({
         todayOrders: todayOrders.length,
         todayRevenue,
+        activeOrders: activeOrders.length,
         topItem,
-        newCustomers
+        newCustomers,
+        totalOrders,
+        statusCounts
       });
       
       setLiveOrders(activeOrders);
@@ -64,9 +74,8 @@ const Dashboard = () => {
       const menuResponse = await menuService.getAllItems({ limit: 10 });
       setMenuItems(menuResponse.items || []);
       
-      // Generate sales data for chart (mock data)
-      const salesData = generateSalesData();
-      setSalesData(salesData);
+      // Generate sales data for chart using real orders (last 7 days)
+      setSalesData(generateSalesData(orders));
       
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
@@ -75,13 +84,27 @@ const Dashboard = () => {
     }
   };
 
-  const generateSalesData = () => {
-    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    return days.map(day => ({
-      day,
-      orders: Math.floor(Math.random() * 50) + 20,
-      revenue: Math.floor(Math.random() * 5000) + 2000
-    }));
+  const generateSalesData = (orders) => {
+    const dataMap = {};
+    const now = new Date();
+
+    // Initialize last 7 days
+    for (let i = 6; i >= 0; i--) {
+      const day = new Date(now);
+      day.setDate(now.getDate() - i);
+      const key = day.toISOString().slice(0, 10);
+      dataMap[key] = { day: day.toLocaleDateString(undefined, { weekday: 'short' }), orders: 0, revenue: 0 };
+    }
+
+    orders.forEach(order => {
+      const key = new Date(order.created_at).toISOString().slice(0, 10);
+      if (dataMap[key]) {
+        dataMap[key].orders += 1;
+        dataMap[key].revenue += order.total || 0;
+      }
+    });
+
+    return Object.values(dataMap);
   };
 
   if (loading) {
@@ -97,12 +120,12 @@ const Dashboard = () => {
     <div className="dashboard-container">
       <div className="dashboard-header">
         <div className="header-content">
-          <h1>Welcome back, {user?.name}! 👋</h1>
-          <p className="header-subtitle">Here's what's happening with your restaurant today.</p>
+          <h1>Welcome back, {user?.name}!</h1>
+          <p className="header-subtitle">Here&apos;s what&apos;s happening with your restaurant today.</p>
         </div>
         <div className="header-actions">
           <button className="btn-refresh" onClick={fetchDashboardData}>
-            🔄 Refresh
+            Refresh
           </button>
           <span className="last-updated">
             Last updated: {new Date().toLocaleTimeString()}

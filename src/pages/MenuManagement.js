@@ -7,33 +7,19 @@ import MenuForm from "../components/menu/MenuForm";
 const MenuManagement = () => {
   const { isAdmin } = useAuth();
   const [menuItems, setMenuItems] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedItem, setSelectedItem] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetchCategories();
     fetchMenuItems();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedCategory]);
-
-  const fetchCategories = async () => {
-    try {
-      const data = await menuService.getCategories();
-      setCategories(data);
-    } catch (error) {
-      console.error("Failed to fetch categories:", error);
-    }
-  };
+  }, []);
 
   const fetchMenuItems = async () => {
     setLoading(true);
     try {
-      const params = selectedCategory ? { category: selectedCategory } : {};
-      const data = await menuService.getAllItems(params);
+      const data = await menuService.getAllItems();
       setMenuItems(data.items);
       setError("");
     } catch (error) {
@@ -63,7 +49,7 @@ const MenuManagement = () => {
     }
   };
 
-  const handleSave = (savedItem) => {
+  const handleSave = () => {
     setShowForm(false);
     setSelectedItem(null);
     fetchMenuItems();
@@ -116,22 +102,6 @@ const MenuManagement = () => {
           onCancel={handleCancel}
         />
       )}
-
-      <div className="category-filter">
-        <label htmlFor="category">Filter by Category:</label>
-        <select
-          id="category"
-          value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
-        >
-          <option value="">All Categories</option>
-          {categories.map((category) => (
-            <option key={category} value={category}>
-              {category}
-            </option>
-          ))}
-        </select>
-      </div>
 
       {loading && <div className="loading">Loading menu...</div>}
       {error && <div className="error-message">{error}</div>}

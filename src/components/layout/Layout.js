@@ -14,6 +14,7 @@ const Layout = ({ children }) => {
   const showSidebar = user && [
     '/dashboard',
     '/menu/manage',
+    '/categories',
     '/orders',
     '/customers',
     '/analytics',
