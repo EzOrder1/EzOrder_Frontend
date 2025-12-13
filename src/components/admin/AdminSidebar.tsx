@@ -52,34 +52,43 @@ const menuItems = [
 
 export function AdminSidebar({ activeSection, setActiveSection }: AdminSidebarProps) {
     return (
-        <aside className="fixed left-0 top-0 z-40 h-screen w-64 border-r bg-white transition-transform">
-            <div className="flex h-16 items-center border-b px-6">
-                <span className="text-xl font-bold uppercase tracking-wider text-primary">
-                    EzOrder
-                </span>
+        <aside className="fixed left-0 top-0 z-40 h-screen w-64 border-r border-slate-800 bg-slate-900 text-slate-300 transition-transform shadow-xl">
+            <div className="flex h-16 items-center border-b border-slate-800 px-6 backdrop-blur-sm bg-slate-900/50">
+                <div className="flex items-center gap-2">
+                    <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                        <ShoppingBag className="h-5 w-5 text-white" />
+                    </div>
+                    <span className="text-xl font-bold tracking-tight text-white bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
+                        EzOrder
+                    </span>
+                </div>
             </div>
-            <div className="h-[calc(100vh-64px)] overflow-y-auto py-4">
-                <nav className="space-y-6 px-4">
+            <div className="h-[calc(100vh-64px)] overflow-y-auto py-6 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                <nav className="space-y-8 px-4">
                     {menuItems.map((group, index) => (
                         <div key={index}>
-                            <h3 className="mb-2 px-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                            <h3 className="mb-3 px-3 text-xs font-bold uppercase tracking-wider text-slate-500">
                                 {group.category}
                             </h3>
                             <div className="space-y-1">
                                 {group.items.map((item) => {
                                     const Icon = item.icon;
+                                    const isActive = activeSection === item.id;
                                     return (
                                         <button
                                             key={item.id}
                                             onClick={() => setActiveSection(item.id)}
                                             className={cn(
-                                                "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-                                                activeSection === item.id
-                                                    ? "bg-primary text-primary-foreground"
-                                                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                                                "group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200",
+                                                isActive
+                                                    ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md shadow-indigo-900/20"
+                                                    : "text-slate-400 hover:bg-slate-800 hover:text-white"
                                             )}
                                         >
-                                            <Icon className="h-4 w-4" />
+                                            <Icon className={cn(
+                                                "h-5 w-5 transition-colors",
+                                                isActive ? "text-white" : "text-slate-500 group-hover:text-white"
+                                            )} />
                                             {item.label}
                                         </button>
                                     );
