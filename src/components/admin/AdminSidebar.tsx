@@ -37,6 +37,12 @@ const menuItems = [
         ],
     },
     {
+        category: "Operations",
+        items: [
+            { id: "riders", label: "Rider Management", icon: Users },
+        ]
+    },
+    {
         category: "Analytics",
         items: [
             { id: "sales-report", label: "Sales Report", icon: BarChart },

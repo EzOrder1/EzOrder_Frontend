@@ -15,6 +15,9 @@ import { ActiveOrders } from "@/components/admin/orders/ActiveOrders";
 import { BulkOrderManager } from "@/components/admin/orders/BulkOrderManager";
 import { SalesReport } from "@/components/admin/analytics/SalesReport";
 import { CustomerList } from "@/components/admin/analytics/CustomerList";
+import { RiderList } from "@/components/admin/riders/RiderList";
+import { RiderForm } from "@/components/admin/riders/RiderForm";
+import { RiderSelectionModal } from "@/components/admin/riders/RiderSelectionModal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -39,6 +42,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ringtone from "@/assets/ringtone.mp3";
+import { Rider, RiderFormData } from "@/types";
 
 // Types
 type OrderStatus =
@@ -78,6 +82,7 @@ type MenuItem = {
 type MenuResponse = {
   items: MenuItem[];
   total: number;
+  items_filter?: string; // Add optional property to match usage if needed, or ignore
 };
 
 type OrderListResponse = {
@@ -121,6 +126,13 @@ const AdminDashboard = () => {
   // Menu State
   const [isMenuItemModalOpen, setIsMenuItemModalOpen] = useState(false);
   const [editingMenuItem, setEditingMenuItem] = useState<FormMenuItem | null>(null);
+
+  // Rider State
+  const [isRiderModalOpen, setIsRiderModalOpen] = useState(false);
+  const [editingRider, setEditingRider] = useState<Rider | null>(null);
+  const [isRiderSelectionOpen, setIsRiderSelectionOpen] = useState(false);
+  const [pendingStatusOrder, setPendingStatusOrder] = useState<Order | null>(null);
+
 
   // Order Detail State
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
@@ -244,11 +256,21 @@ const AdminDashboard = () => {
     enabled: authorized,
   });
 
+  const ridersQuery = useQuery({
+    queryKey: ["riders"],
+    queryFn: async () => {
+      const res = await api.get("/api/v1/riders/");
+      return res.data.items as Rider[];
+    },
+    enabled: authorized,
+  });
+
   // Mutations
   const orderStatusMutation = useMutation({
-    mutationFn: async (payload: { orderNumber: string; status: OrderStatus }) => {
+    mutationFn: async (payload: { orderNumber: string; status: OrderStatus; riderId?: string }) => {
       const res = await api.put(`/api/v1/orders/${payload.orderNumber}/status`, {
         status: payload.status,
+        rider_id: payload.riderId,
       });
       return res.data as Order;
     },
@@ -330,6 +352,43 @@ const AdminDashboard = () => {
     onError: () => toast({ title: "Failed to delete category", variant: "destructive" }),
   });
 
+  const createRiderMutation = useMutation({
+    mutationFn: async (data: RiderFormData) => {
+      const res = await api.post("/api/v1/riders", data);
+      return res.data;
+    },
+    onSuccess: () => {
+      toast({ title: "Rider added" });
+      setIsRiderModalOpen(false);
+      queryClient.invalidateQueries({ queryKey: ["riders"] });
+    },
+    onError: () => toast({ title: "Failed to add rider", variant: "destructive" }),
+  });
+
+  const updateRiderMutation = useMutation({
+    mutationFn: async (payload: { id: string; data: RiderFormData }) => {
+      const res = await api.put(`/api/v1/riders/${payload.id}`, payload.data);
+      return res.data;
+    },
+    onSuccess: () => {
+      toast({ title: "Rider updated" });
+      setIsRiderModalOpen(false);
+      setEditingRider(null);
+      queryClient.invalidateQueries({ queryKey: ["riders"] });
+    },
+    onError: () => toast({ title: "Failed to update rider", variant: "destructive" }),
+  });
+
+  const deleteRiderMutation = useMutation({
+    mutationFn: async (id: string) => {
+      await api.delete(`/api/v1/riders/${id}`);
+    },
+    onSuccess: () => {
+      toast({ title: "Rider deleted" });
+      queryClient.invalidateQueries({ queryKey: ["riders"] });
+    },
+  });
+
 
   // Data Logic
   const revenueLastWeek = useMemo(() => {
@@ -387,6 +446,26 @@ const AdminDashboard = () => {
     const users = new Set(ordersQuery.data.orders.map(o => o.phone_number));
     return users.size;
   }, [ordersQuery.data]);
+
+  const handleStatusChange = (order: Order, newStatus: OrderStatus) => {
+    if (newStatus === "out_for_delivery") {
+      setPendingStatusOrder(order);
+      setIsRiderSelectionOpen(true);
+    } else {
+      orderStatusMutation.mutate({ orderNumber: order.order_number, status: newStatus });
+    }
+  };
+
+  const handleRiderSelection = (riderId: string) => {
+    if (pendingStatusOrder) {
+      orderStatusMutation.mutate({
+        orderNumber: pendingStatusOrder.order_number,
+        status: "out_for_delivery",
+        riderId: riderId
+      });
+      setPendingStatusOrder(null);
+    }
+  };
 
 
   if (!authorized) return null;
@@ -532,9 +611,7 @@ const AdminDashboard = () => {
                             <td className="px-3 py-3" onClick={(e) => e.stopPropagation()}>
                               <Select
                                 value={order.status}
-                                onValueChange={(value: OrderStatus) =>
-                                  orderStatusMutation.mutate({ orderNumber: order.order_number, status: value })
-                                }
+                                onValueChange={(value: OrderStatus) => handleStatusChange(order, value)}
                               >
                                 <SelectTrigger className="w-[140px] h-8">
                                   <SelectValue />
@@ -559,6 +636,12 @@ const AdminDashboard = () => {
                 open={isOrderModalOpen}
                 onOpenChange={setIsOrderModalOpen}
                 order={selectedOrder}
+              />
+              <RiderSelectionModal
+                open={isRiderSelectionOpen}
+                onOpenChange={setIsRiderSelectionOpen}
+                riders={ridersQuery.data || []}
+                onSelect={handleRiderSelection}
               />
             </div>
           )}
@@ -615,6 +698,37 @@ const AdminDashboard = () => {
             </div>
           )}
 
+          {activeSection === "riders" && (
+            <div className="space-y-6">
+              <h1 className="text-2xl font-bold tracking-tight">Rider Management</h1>
+              <RiderList
+                riders={ridersQuery.data || []}
+                onCreate={() => {
+                  setEditingRider(null);
+                  setIsRiderModalOpen(true);
+                }}
+                onEdit={(rider) => {
+                  setEditingRider(rider);
+                  setIsRiderModalOpen(true);
+                }}
+                onDelete={(id) => deleteRiderMutation.mutate(id)}
+              />
+              <RiderForm
+                open={isRiderModalOpen}
+                onOpenChange={setIsRiderModalOpen}
+                initialData={editingRider}
+                isSubmitting={createRiderMutation.isPending || updateRiderMutation.isPending}
+                onSubmit={(data) => {
+                  if (editingRider?.id) {
+                    updateRiderMutation.mutate({ id: editingRider.id, data });
+                  } else {
+                    createRiderMutation.mutate(data);
+                  }
+                }}
+              />
+            </div>
+          )}
+
           {activeSection === "sales-report" && (
             <SalesReport data={metricsQuery.data?.series || []} />
           )}
@@ -623,7 +737,7 @@ const AdminDashboard = () => {
             <CustomerList orders={ordersQuery.data?.orders || []} />
           )}
 
-          {(activeSection !== "dashboard" && activeSection !== "orders" && activeSection !== "menu-items" && activeSection !== "categories" && activeSection !== "sales-report" && activeSection !== "customers") && (
+          {(activeSection !== "dashboard" && activeSection !== "orders" && activeSection !== "menu-items" && activeSection !== "categories" && activeSection !== "sales-report" && activeSection !== "customers" && activeSection !== "riders" && activeSection !== "bulk-update") && (
             <div className="flex h-[50vh] flex-col items-center justify-center text-center">
               <div className="rounded-full bg-gray-100 p-6">
                 <Search className="h-10 w-10 text-gray-400" />
