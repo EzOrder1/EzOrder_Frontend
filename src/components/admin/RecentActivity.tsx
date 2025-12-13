@@ -59,7 +59,7 @@ export function RecentActivity({ orders }: RecentActivityProps) {
                                         {config.text} #{order.order_number}
                                     </p>
                                     <p className="text-sm text-muted-foreground">
-                                        {order.user_name} - ${order.total}
+                                        {order.user_name} - {new Intl.NumberFormat("en-PK", { style: "currency", currency: "PKR" }).format(order.total)}
                                     </p>
                                     <p className="text-xs text-muted-foreground pt-1">
                                         {timeAgo(order.created_at)}

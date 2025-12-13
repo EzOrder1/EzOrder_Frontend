@@ -109,7 +109,7 @@ const statusBadgeTone: Record<OrderStatus, string> = {
 };
 
 const currency = (value: number) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
+  new Intl.NumberFormat("en-PK", { style: "currency", currency: "PKR" }).format(
     value || 0
   );
 
@@ -354,7 +354,7 @@ const AdminDashboard = () => {
 
   const createRiderMutation = useMutation({
     mutationFn: async (data: RiderFormData) => {
-      const res = await api.post("/api/v1/riders", data);
+      const res = await api.post("/api/v1/riders/", data);
       return res.data;
     },
     onSuccess: () => {
@@ -495,14 +495,7 @@ const AdminDashboard = () => {
             <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setIsSidebarOpen(true)}>
               <MenuIcon className="h-6 w-6" />
             </Button>
-            <div className="relative hidden md:block">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                type="search"
-                placeholder="Search..."
-                className="w-64 bg-slate-50 pl-9 focus-visible:ring-1"
-              />
-            </div>
+
           </div>
           <div className="flex items-center gap-4">
             <Button

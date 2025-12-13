@@ -66,7 +66,7 @@ export function OrderDetailsModal({
     if (!order) return null;
 
     const currency = (value: number) =>
-        new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
+        new Intl.NumberFormat("en-PK", { style: "currency", currency: "PKR" }).format(
             value || 0
         );
 

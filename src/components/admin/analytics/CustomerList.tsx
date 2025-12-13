@@ -44,7 +44,7 @@ interface CustomerStats {
 
 export function CustomerList({ orders }: CustomerListProps) {
     const currency = (value: number) =>
-        new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
+        new Intl.NumberFormat("en-PK", { style: "currency", currency: "PKR" }).format(
             value || 0
         );
 

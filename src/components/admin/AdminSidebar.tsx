@@ -56,7 +56,7 @@ export function AdminSidebar({ activeSection, setActiveSection }: AdminSidebarPr
         <aside className="fixed left-0 top-0 z-40 h-screen w-64 border-r bg-white transition-transform">
             <div className="flex h-16 items-center border-b px-6">
                 <span className="text-xl font-bold uppercase tracking-wider text-primary">
-                    ElaAdmin
+                    EzOrder
                 </span>
             </div>
             <div className="h-[calc(100vh-64px)] overflow-y-auto py-4">
