@@ -562,82 +562,7 @@ const AdminDashboard = () => {
             </div>
           )}
 
-          {activeSection === "orders" && (
-            <div className="space-y-6">
-              <h1 className="text-2xl font-bold tracking-tight">Order Management</h1>
-              <Card>
-                <CardHeader>
-                  <CardTitle>All Orders</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="overflow-x-auto">
-                    <table className="min-w-full text-sm">
-                      <thead>
-                        <tr className="text-left text-muted-foreground border-b">
-                          <th className="px-3 py-3">Order</th>
-                          <th className="px-3 py-3">Customer</th>
-                          <th className="px-3 py-3">Total</th>
-                          <th className="px-3 py-3">Status</th>
-                          <th className="px-3 py-3">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-border">
-                        {(ordersQuery.data?.orders || []).map((order) => (
-                          <tr
-                            key={order.order_number}
-                            className="hover:bg-muted/50 cursor-pointer"
-                            onClick={() => {
-                              setSelectedOrder(order);
-                              setIsOrderModalOpen(true);
-                            }}
-                          >
-                            <td className="px-3 py-3 font-semibold">{order.order_number}</td>
-                            <td className="px-3 py-3">
-                              <div className="font-medium">{order.user_name}</div>
-                            </td>
-                            <td className="px-3 py-3">{currency(order.total)}</td>
-                            <td className="px-3 py-3">
-                              <Badge className={cn("font-semibold capitalize", statusBadgeTone[order.status])}>
-                                {order.status.replace(/_/g, " ")}
-                              </Badge>
-                            </td>
-                            <td className="px-3 py-3" onClick={(e) => e.stopPropagation()}>
-                              <Select
-                                value={order.status}
-                                onValueChange={(value: OrderStatus) => handleStatusChange(order, value)}
-                              >
-                                <SelectTrigger className="w-[140px] h-8">
-                                  <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  {orderStatusOptions.map((status) => (
-                                    <SelectItem key={status.value} value={status.value}>
-                                      {status.label}
-                                    </SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </CardContent>
-              </Card>
-              <OrderDetailsModal
-                open={isOrderModalOpen}
-                onOpenChange={setIsOrderModalOpen}
-                order={selectedOrder}
-              />
-              <RiderSelectionModal
-                open={isRiderSelectionOpen}
-                onOpenChange={setIsRiderSelectionOpen}
-                riders={ridersQuery.data || []}
-                onSelect={handleRiderSelection}
-              />
-            </div>
-          )}
+
           {activeSection === "bulk-update" && (
             <BulkOrderManager
               onOrderClick={(order) => {
@@ -739,9 +664,22 @@ const AdminDashboard = () => {
               <p className="text-muted-foreground">The {activeSection.replace("-", " ")} module is coming soon.</p>
             </div>
           )}
+
+
+          <OrderDetailsModal
+            open={isOrderModalOpen}
+            onOpenChange={setIsOrderModalOpen}
+            order={selectedOrder}
+          />
+          <RiderSelectionModal
+            open={isRiderSelectionOpen}
+            onOpenChange={setIsRiderSelectionOpen}
+            riders={ridersQuery.data || []}
+            onSelect={handleRiderSelection}
+          />
         </main>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 };
 

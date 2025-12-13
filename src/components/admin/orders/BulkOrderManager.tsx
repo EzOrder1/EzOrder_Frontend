@@ -83,7 +83,7 @@ export function BulkOrderManager({ onOrderClick }: BulkOrderManagerProps) {
 
     return (
         <div className="space-y-6 relative pb-20">
-            <h1 className="text-2xl font-bold tracking-tight">Bulk Update</h1>
+            <h1 className="text-2xl font-bold tracking-tight">Order Management</h1>
 
             <OrdersTable
                 orders={ordersQuery.data || []}
