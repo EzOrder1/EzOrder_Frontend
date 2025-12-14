@@ -143,44 +143,49 @@ const AdminDashboard = () => {
   const [unreadNotifications, setUnreadNotifications] = useState(0);
 
   // Poll for new orders every 30 seconds
-  useQuery({
+  const { data: latestOrder } = useQuery({
     queryKey: ["latest-orders-poll"],
     queryFn: async () => {
-      // Fetch just the most recent order to check timestamp/id
       const res = await api.get("/api/v1/orders", { params: { limit: 1 } });
-      const latestOrder = res.data.orders[0] as Order;
-
-      if (latestOrder) {
-        const lastKnownOrder = localStorage.getItem("lastKnownOrderNumber");
-
-        // If we have a last known order and this one is different (and presumably newer)
-        if (lastKnownOrder && lastKnownOrder !== latestOrder.order_number) {
-          // It's a new order!
-          setUnreadNotifications(prev => prev + 1);
-          toast({
-            title: "New Order Received! 🔔",
-            description: `Order #${latestOrder.order_number} from ${latestOrder.user_name}`,
-            duration: 5000,
-            className: "bg-emerald-50 border-emerald-200"
-          });
-
-          // Play Sound
-          try {
-            const audio = new Audio(ringtone);
-            audio.play().catch(e => console.error("Audio play failed", e));
-          } catch (err) {
-            console.error("Failed to initialize audio", err);
-          }
-        }
-
-        // Update local storage to current latest
-        localStorage.setItem("lastKnownOrderNumber", latestOrder.order_number);
-      }
-      return latestOrder;
+      return res.data.orders[0] as Order;
     },
-    refetchInterval: 30000, // 30 seconds
+    refetchInterval: 30000,
     enabled: authorized,
   });
+
+  // Handle Notifications
+  useEffect(() => {
+    if (latestOrder) {
+      const lastKnownOrder = localStorage.getItem("lastKnownOrderNumber");
+
+      // If we have a last known order and this one is different (and presumably newer)
+      if (lastKnownOrder && lastKnownOrder !== latestOrder.order_number) {
+        // It's a new order!
+        setUnreadNotifications((prev) => prev + 1);
+        toast({
+          title: "New Order Received! 🔔",
+          description: `Order #${latestOrder.order_number} from ${latestOrder.user_name}`,
+          duration: 5000,
+          className: "bg-emerald-50 border-emerald-200",
+        });
+
+        // Play Sound
+        playNotificationSound();
+      }
+
+      // Update local storage to current latest
+      localStorage.setItem("lastKnownOrderNumber", latestOrder.order_number);
+    }
+  }, [latestOrder, toast]);
+
+  const playNotificationSound = () => {
+    try {
+      const audio = new Audio(ringtone);
+      audio.play().catch((e) => console.error("Audio play failed", e));
+    } catch (err) {
+      console.error("Failed to initialize audio", err);
+    }
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -491,23 +496,29 @@ const AdminDashboard = () => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Header */}
-        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b bg-white px-6 shadow-sm">
-          <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setIsSidebarOpen(true)}>
-              <MenuIcon className="h-6 w-6" />
-            </Button>
 
+        <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-white px-6 shadow-sm">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            className="mr-4 lg:hidden"
+          >
+            <MenuIcon className="h-5 w-5" />
+          </Button>
+
+          <div className="flex flex-1 items-center gap-4">
+            {/* Left side of header if needed */}
           </div>
           <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="relative"
-              onClick={() => setUnreadNotifications(0)}
-            >
-              <Bell className="h-5 w-5 text-muted-foreground" />
+            <Button variant="outline" size="sm" onClick={playNotificationSound}>
+              Test Sound 🔊
+            </Button>
+
+            <Button variant="ghost" size="icon" className="relative text-slate-500 hover:text-indigo-600">
+              <Bell className="h-5 w-5" />
               {unreadNotifications > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white">
+                <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] text-white">
                   {unreadNotifications}
                 </span>
               )}
