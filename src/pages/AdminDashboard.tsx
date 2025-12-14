@@ -511,10 +511,6 @@ const AdminDashboard = () => {
             {/* Left side of header if needed */}
           </div>
           <div className="flex items-center gap-4">
-            <Button variant="outline" size="sm" onClick={playNotificationSound}>
-              Test Sound 🔊
-            </Button>
-
             <Button variant="ghost" size="icon" className="relative text-slate-500 hover:text-indigo-600">
               <Bell className="h-5 w-5" />
               {unreadNotifications > 0 && (

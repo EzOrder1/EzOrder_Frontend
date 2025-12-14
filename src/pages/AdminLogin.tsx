@@ -112,6 +112,7 @@ const AdminLogin = () => {
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="your@email.com"
+                      autoComplete="username"
                       className="pl-10"
                       required
                     />
@@ -129,6 +130,7 @@ const AdminLogin = () => {
                       value={formData.password}
                       onChange={handleChange}
                       placeholder="********"
+                      autoComplete="current-password"
                       className="pl-10 pr-10"
                       required
                     />
@@ -179,4 +181,3 @@ const AdminLogin = () => {
 };
 
 export default AdminLogin;
-
