@@ -39,6 +39,7 @@ const menuItems = [
         category: "Operations",
         items: [
             { id: "riders", label: "Rider Management", icon: Users },
+            { id: "delivery-zones", label: "Delivery Zones", icon: Map },
         ]
     },
     {

@@ -18,6 +18,7 @@ import { CustomerList } from "@/components/admin/analytics/CustomerList";
 import { RiderList } from "@/components/admin/riders/RiderList";
 import { RiderForm } from "@/components/admin/riders/RiderForm";
 import { RiderSelectionModal } from "@/components/admin/riders/RiderSelectionModal";
+import { DeliveryZoneList } from "@/components/admin/zones/DeliveryZoneList";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -570,6 +571,12 @@ const AdminDashboard = () => {
                 setIsOrderModalOpen(true);
               }}
             />
+          )}
+
+
+
+          {activeSection === "delivery-zones" && (
+            <DeliveryZoneList />
           )}
 
           {activeSection === "menu-items" && (
