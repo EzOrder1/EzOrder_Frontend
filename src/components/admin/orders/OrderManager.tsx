@@ -15,11 +15,11 @@ import { Loader2 } from "lucide-react";
 import { RiderSelectionModal } from "@/components/admin/riders/RiderSelectionModal";
 import { Rider } from "@/types";
 
-interface BulkOrderManagerProps {
+interface OrderManagerProps {
     onOrderClick: (order: Order) => void;
 }
 
-export function BulkOrderManager({ onOrderClick }: BulkOrderManagerProps) {
+export function OrderManager({ onOrderClick }: OrderManagerProps) {
     const { toast } = useToast();
     const queryClient = useQueryClient();
     const [selectedIds, setSelectedIds] = useState<string[]>([]);

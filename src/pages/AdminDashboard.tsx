@@ -12,7 +12,7 @@ import { MenuItemForm, MenuItem as FormMenuItem } from "@/components/admin/menu/
 import { CategoryManager } from "@/components/admin/menu/CategoryManager";
 import { OrderDetailsModal } from "@/components/admin/orders/OrderDetailsModal";
 import { ActiveOrders } from "@/components/admin/orders/ActiveOrders";
-import { BulkOrderManager } from "@/components/admin/orders/BulkOrderManager";
+import { OrderManager } from "@/components/admin/orders/OrderManager";
 import { SalesReport } from "@/components/admin/analytics/SalesReport";
 import { CustomerList } from "@/components/admin/analytics/CustomerList";
 import { RiderList } from "@/components/admin/riders/RiderList";
@@ -572,7 +572,7 @@ const AdminDashboard = () => {
 
 
           {activeSection === "bulk-update" && (
-            <BulkOrderManager
+            <OrderManager
               onOrderClick={(order) => {
                 setSelectedOrder(order as any);
                 setIsOrderModalOpen(true);
