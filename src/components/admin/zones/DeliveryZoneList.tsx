@@ -26,7 +26,7 @@ export function DeliveryZoneList() {
     const zonesQuery = useQuery({
         queryKey: ["zones"],
         queryFn: async () => {
-            const response = await api.get("/zones/");
+            const response = await api.get("/api/v1/zones");
             return response.data;
         },
     });
@@ -36,7 +36,7 @@ export function DeliveryZoneList() {
     // Mutations
     const createZone = useMutation({
         mutationFn: async (data: DeliveryZoneFormData) => {
-            await api.post("/zones/", data);
+            await api.post("/api/v1/zones", data);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["zones"] });
@@ -49,7 +49,7 @@ export function DeliveryZoneList() {
 
     const updateZone = useMutation({
         mutationFn: async ({ id, data }: { id: string; data: DeliveryZoneFormData }) => {
-            await api.put(`/zones/${id}`, data);
+            await api.put(`/api/v1/zones/${id}`, data);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["zones"] });
@@ -62,7 +62,7 @@ export function DeliveryZoneList() {
 
     const deleteZone = useMutation({
         mutationFn: async (id: string) => {
-            await api.delete(`/zones/${id}`);
+            await api.delete(`/api/v1/zones/${id}`);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["zones"] });

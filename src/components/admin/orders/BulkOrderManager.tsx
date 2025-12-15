@@ -12,6 +12,8 @@ import {
 import api from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
+import { RiderSelectionModal } from "@/components/admin/riders/RiderSelectionModal";
+import { Rider } from "@/types";
 
 interface BulkOrderManagerProps {
     onOrderClick: (order: Order) => void;
@@ -22,6 +24,8 @@ export function BulkOrderManager({ onOrderClick }: BulkOrderManagerProps) {
     const queryClient = useQueryClient();
     const [selectedIds, setSelectedIds] = useState<string[]>([]);
     const [targetStatus, setTargetStatus] = useState<string>("");
+    const [pendingOrderId, setPendingOrderId] = useState<string | null>(null);
+    const [isRiderModalOpen, setIsRiderModalOpen] = useState(false);
 
     // Reusing the general orders query, but maybe we want specific filtering later
     // For now fetch recent orders
@@ -31,6 +35,14 @@ export function BulkOrderManager({ onOrderClick }: BulkOrderManagerProps) {
             // Fetching 100 most recent for management
             const res = await api.get("/api/v1/orders", { params: { limit: 100 } });
             return res.data.orders as Order[];
+        },
+    });
+
+    const ridersQuery = useQuery({
+        queryKey: ["riders"],
+        queryFn: async () => {
+            const res = await api.get("/api/v1/riders/");
+            return res.data.items as Rider[];
         },
     });
 
@@ -61,17 +73,47 @@ export function BulkOrderManager({ onOrderClick }: BulkOrderManagerProps) {
     });
 
     const singleStatusMutation = useMutation({
-        mutationFn: async (payload: { orderNumber: string; status: string }) => {
+        mutationFn: async (payload: { orderNumber: string; status: string; riderId?: string }) => {
             await api.put(`/api/v1/orders/${payload.orderNumber}/status`, {
                 status: payload.status,
+                rider_id: payload.riderId,
             });
         },
         onSuccess: () => {
             toast({ title: "Order status updated" });
             queryClient.invalidateQueries({ queryKey: ["orders-bulk"] });
             queryClient.invalidateQueries({ queryKey: ["orders"] });
+            queryClient.invalidateQueries({ queryKey: ["active-orders"] });
         },
     });
+
+    const handleStatusChange = (orderNumber: string, status: string) => {
+        if (status === "out_for_delivery") {
+            const activeRiders = (ridersQuery.data || []).filter((r) => r.status === "active");
+            if (activeRiders.length === 0) {
+                toast({
+                    title: "No active riders",
+                    description: "Add or activate a rider to assign deliveries.",
+                    variant: "destructive",
+                });
+                return;
+            }
+            setPendingOrderId(orderNumber);
+            setIsRiderModalOpen(true);
+            return;
+        }
+        singleStatusMutation.mutate({ orderNumber, status });
+    };
+
+    const handleRiderSelect = (riderId: string) => {
+        if (!pendingOrderId) return;
+        singleStatusMutation.mutate({
+            orderNumber: pendingOrderId,
+            status: "out_for_delivery",
+            riderId,
+        });
+        setPendingOrderId(null);
+    };
 
     if (ordersQuery.isLoading) {
         return (
@@ -88,9 +130,7 @@ export function BulkOrderManager({ onOrderClick }: BulkOrderManagerProps) {
             <OrdersTable
                 orders={ordersQuery.data || []}
                 onOrderClick={onOrderClick}
-                onStatusChange={(id, status) =>
-                    singleStatusMutation.mutate({ orderNumber: id, status })
-                }
+                onStatusChange={handleStatusChange}
                 selectable
                 selectedIds={selectedIds}
                 onSelectionChange={setSelectedIds}
@@ -122,6 +162,16 @@ export function BulkOrderManager({ onOrderClick }: BulkOrderManagerProps) {
                     </Button>
                 </div>
             )}
+
+            <RiderSelectionModal
+                open={isRiderModalOpen}
+                onOpenChange={(open) => {
+                    setIsRiderModalOpen(open);
+                    if (!open) setPendingOrderId(null);
+                }}
+                riders={ridersQuery.data || []}
+                onSelect={handleRiderSelect}
+            />
         </div>
     );
 }

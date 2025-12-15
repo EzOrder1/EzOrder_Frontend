@@ -3,6 +3,9 @@ import { OrdersTable, Order } from "./OrdersTable";
 import api from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
+import { RiderSelectionModal } from "../riders/RiderSelectionModal";
+import { Rider } from "@/types";
+import { useState } from "react";
 
 interface ActiveOrdersProps {
     onOrderClick: (order: Order) => void;
@@ -11,6 +14,8 @@ interface ActiveOrdersProps {
 export function ActiveOrders({ onOrderClick }: ActiveOrdersProps) {
     const { toast } = useToast();
     const queryClient = useQueryClient();
+    const [isRiderModalOpen, setIsRiderModalOpen] = useState(false);
+    const [pendingOrderId, setPendingOrderId] = useState<string | null>(null);
 
     const activeOrdersQuery = useQuery({
         queryKey: ["active-orders"],
@@ -21,10 +26,19 @@ export function ActiveOrders({ onOrderClick }: ActiveOrdersProps) {
         refetchInterval: 15000, // Auto-refresh every 15s for kitchen view
     });
 
+    const ridersQuery = useQuery({
+        queryKey: ["riders"],
+        queryFn: async () => {
+            const res = await api.get("/api/v1/riders/");
+            return res.data.items as Rider[];
+        },
+    });
+
     const orderStatusMutation = useMutation({
-        mutationFn: async (payload: { orderNumber: string; status: string }) => {
+        mutationFn: async (payload: { orderNumber: string; status: string; riderId?: string }) => {
             await api.put(`/api/v1/orders/${payload.orderNumber}/status`, {
                 status: payload.status,
+                rider_id: payload.riderId,
             });
         },
         onSuccess: () => {
@@ -38,6 +52,34 @@ export function ActiveOrders({ onOrderClick }: ActiveOrdersProps) {
             toast({ title: "Failed to update status", variant: "destructive" });
         }
     });
+
+    const handleStatusChange = (orderNumber: string, status: string) => {
+        if (status === "out_for_delivery") {
+            const activeRiders = (ridersQuery.data || []).filter((r) => r.status === "active");
+            if (activeRiders.length === 0) {
+                toast({
+                    title: "No active riders",
+                    description: "Add or activate a rider to assign deliveries.",
+                    variant: "destructive",
+                });
+                return;
+            }
+            setPendingOrderId(orderNumber);
+            setIsRiderModalOpen(true);
+            return;
+        }
+        orderStatusMutation.mutate({ orderNumber, status });
+    };
+
+    const handleRiderSelect = (riderId: string) => {
+        if (!pendingOrderId) return;
+        orderStatusMutation.mutate({
+            orderNumber: pendingOrderId,
+            status: "out_for_delivery",
+            riderId,
+        });
+        setPendingOrderId(null);
+    };
 
     if (activeOrdersQuery.isLoading) {
         return (
@@ -59,9 +101,16 @@ export function ActiveOrders({ onOrderClick }: ActiveOrdersProps) {
             <OrdersTable
                 orders={activeOrdersQuery.data || []}
                 onOrderClick={onOrderClick}
-                onStatusChange={(id, status) =>
-                    orderStatusMutation.mutate({ orderNumber: id, status })
-                }
+                onStatusChange={handleStatusChange}
+            />
+            <RiderSelectionModal
+                open={isRiderModalOpen}
+                onOpenChange={(open) => {
+                    setIsRiderModalOpen(open);
+                    if (!open) setPendingOrderId(null);
+                }}
+                riders={ridersQuery.data || []}
+                onSelect={handleRiderSelect}
             />
         </div>
     );
