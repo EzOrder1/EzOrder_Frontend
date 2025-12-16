@@ -100,24 +100,7 @@ export function HeroSection() {
                 height={400}
               />
 
-              Floating Cards
-              <motion.div
-                animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -bottom-6 -left-6 rounded-2xl bg-white p-4 shadow-elevated"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100 text-green-600">
-                    <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-gray-900">Order Confirmed!</p>
-                    <p className="text-xs text-gray-500">Just now via WhatsApp</p>
-                  </div>
-                </div>
-              </motion.div>
+
             </div>
           </motion.div>
         </div>
