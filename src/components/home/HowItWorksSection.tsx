@@ -1,7 +1,9 @@
 import { motion } from "framer-motion";
-import { ArrowRight, CreditCard, Utensils } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import howStep1Connect from "@/assets/how-step1-connect.png";
 import howStep2Browse from "@/assets/how-step2-browse.png";
+import howStep3Order from "@/assets/how-step3-order.png";
+import howStep4Enjoy from "@/assets/how-step4-enjoy.png";
 
 const steps = [
   {
@@ -22,17 +24,15 @@ const steps = [
     number: "3",
     title: "Place Order",
     description: "Securely confirm",
-    icon: CreditCard,
-    isIcon: true,
-    color: "bg-sky-100 text-sky-600",
+    image: howStep3Order,
+    isIcon: false,
   },
   {
     number: "4",
     title: "Enjoy!",
     description: "Track & receive",
-    icon: Utensils,
-    isIcon: true,
-    color: "bg-green-100 text-primary",
+    image: howStep4Enjoy,
+    isIcon: false,
   },
 ];
 
