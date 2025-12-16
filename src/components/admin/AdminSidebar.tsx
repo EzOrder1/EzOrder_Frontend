@@ -60,9 +60,7 @@ export function AdminSidebar({ activeSection, setActiveSection }: AdminSidebarPr
                         alt="EzOrder logo"
                         className="h-9 w-auto object-contain"
                     />
-                    <span className="text-xl font-bold tracking-tight text-white">
-                        EzOrder
-                    </span>
+
                 </div>
             </div>
             <div className="h-[calc(100vh-64px)] overflow-y-auto py-6 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
