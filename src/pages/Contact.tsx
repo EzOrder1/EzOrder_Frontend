@@ -1,271 +1,191 @@
-import { useState } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { motion } from "framer-motion";
-import { Mail, MessageCircle, MapPin, Send } from "lucide-react";
+import { Mail, MapPin, Phone, Send, Twitter, Linkedin, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { useToast } from "@/hooks/use-toast";
-
-const SUPPORT_EMAIL = "support@ezorder.pk";
-const WHATSAPP_BUSINESS = "923001234567";
+import logo from "@/assets/logo.png";
 
 const Contact = () => {
-  const { toast } = useToast();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [honeypot, setHoneypot] = useState("");
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    message: "",
-  });
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        // Form submission logic would go here
+        console.log("Form submitted");
+    };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+    return (
+        <Layout>
+            <section className="relative overflow-hidden py-12 lg:py-20 bg-background pt-24">
+                <div className="section-container">
+                    <div className="text-center mb-16">
+                        <motion.h1
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5 }}
+                            className="text-4xl font-heading font-bold tracking-tight text-foreground sm:text-5xl"
+                        >
+                            Contact Us
+                        </motion.h1>
+                        <motion.p
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.1 }}
+                            className="mt-4 text-lg text-muted-foreground"
+                        >
+                            Have a question or need support? Get in touch with us!
+                        </motion.p>
+                    </div>
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+                    <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
+                        {/* Contact Information */}
+                        <motion.div
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.5, delay: 0.2 }}
+                            className="card-elevated p-8 bg-card rounded-3xl"
+                        >
+                            <div className="flex items-center gap-4 mb-8">
+                                <div className="relative h-20 w-20 overflow-hidden rounded-full border-2 border-border bg-white p-1">
+                                    <img
+                                        src={logo}
+                                        alt="EzOrder Support"
+                                        className="h-full w-full object-contain"
+                                    />
+                                    {/* Removed overlay to make logo clear */}
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-bold font-heading">Get in Touch</h3>
+                                    <p className="text-muted-foreground">We're here to help you 24/7</p>
+                                </div>
+                            </div>
 
-    // Honeypot check
-    if (honeypot) {
-      return;
-    }
+                            <div className="space-y-6">
+                                <a href="tel:+11234567890" className="flex items-center gap-4 group">
+                                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                                        <Phone className="h-5 w-5" />
+                                    </div>
+                                    <span className="text-lg text-foreground hover:text-primary transition-colors">+1 (123) 456-7890</span>
+                                </a>
 
-    // Basic validation
-    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
-      toast({
-        title: "Missing Fields",
-        description: "Please fill in all required fields.",
-        variant: "destructive",
-      });
-      return;
-    }
+                                <a href="mailto:support@ezorder.com" className="flex items-center gap-4 group">
+                                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-accent/10 text-accent-foreground group-hover:bg-accent group-hover:text-white transition-colors">
+                                        <Mail className="h-5 w-5" />
+                                    </div>
+                                    <span className="text-lg text-foreground hover:text-primary transition-colors">support@ezorder.com</span>
+                                </a>
 
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
-      toast({
-        title: "Invalid Email",
-        description: "Please enter a valid email address.",
-        variant: "destructive",
-      });
-      return;
-    }
+                                <div className="flex items-start gap-4 group">
+                                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-secondary/10 text-secondary group-hover:bg-secondary group-hover:text-white transition-colors">
+                                        <MapPin className="h-5 w-5" />
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold text-foreground mb-1 text-lg">Office Address</h4>
+                                        <p className="text-muted-foreground text-lg">
+                                            1234 Market St, Suite 100,<br />
+                                            City, State 12345
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
 
-    setIsSubmitting(true);
+                            <div className="flex gap-4 mt-8">
+                                {/* Social Icons */}
+                                <a href="#" className="h-10 w-10 flex items-center justify-center rounded-lg bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-white transition-colors">
+                                    <MessageCircle className="h-5 w-5" />
+                                </a>
+                                <a href="#" className="h-10 w-10 flex items-center justify-center rounded-lg bg-[#1DA1F2]/10 text-[#1DA1F2] hover:bg-[#1DA1F2] hover:text-white transition-colors">
+                                    <Twitter className="h-5 w-5" />
+                                </a>
+                                <a href="#" className="h-10 w-10 flex items-center justify-center rounded-lg bg-[#0077B5]/10 text-[#0077B5] hover:bg-[#0077B5] hover:text-white transition-colors">
+                                    <Linkedin className="h-5 w-5" />
+                                </a>
+                            </div>
+                        </motion.div>
 
-    // Simulate API call - replace with actual endpoint
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      // POST /api/contact with formData
-      
-      toast({
-        title: "Message Sent!",
-        description: "We'll get back to you as soon as possible.",
-      });
-      
-      setFormData({ name: "", email: "", phone: "", message: "" });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to send message. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+                        {/* Contact Form */}
+                        <motion.div
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.5, delay: 0.3 }}
+                            className="card-elevated p-8 bg-card rounded-3xl h-fit"
+                        >
+                            <h2 className="text-2xl font-bold font-heading mb-6">Send Us a Message</h2>
 
-  return (
-    <Layout>
-      <section className="py-16 lg:py-24">
-        <div className="section-container">
-          <div className="mx-auto max-w-2xl text-center">
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="font-heading text-4xl font-bold tracking-tight text-foreground sm:text-5xl"
+                            <form onSubmit={handleSubmit} className="space-y-4">
+                                <div className="space-y-2">
+                                    <div className="relative">
+                                        <Input
+                                            placeholder="Your Name"
+                                            className="pl-10 h-12 bg-muted/30 border-border/50 focus:bg-background transition-colors"
+                                        />
+                                        <div className="absolute left-3 top-3.5 text-muted-foreground">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <div className="relative">
+                                        <Input
+                                            type="email"
+                                            placeholder="Your Email"
+                                            className="pl-10 h-12 bg-muted/30 border-border/50 focus:bg-background transition-colors"
+                                        />
+                                        <div className="absolute left-3 top-3.5 text-muted-foreground">
+                                            <Mail className="h-5 w-5" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <div className="relative">
+                                        <Input
+                                            placeholder="Subject"
+                                            className="pl-10 h-12 bg-muted/30 border-border/50 focus:bg-background transition-colors"
+                                        />
+                                        <div className="absolute left-3 top-3.5 text-muted-foreground">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <div className="relative">
+                                        <Textarea
+                                            placeholder="Your Message"
+                                            className="pl-10 min-h-[150px] bg-muted/30 border-border/50 focus:bg-background transition-colors resize-none pt-3"
+                                        />
+                                        <div className="absolute left-3 top-3.5 text-muted-foreground">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13.234 20.252 21 3l-18 9.027 6.452 2.622"></path></svg>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <Button
+                                    type="submit"
+                                    className="w-full h-12 text-lg rounded-full bg-gradient-to-r from-primary to-primary-glow hover:shadow-lg transition-all duration-300 mt-4 text-white"
+                                >
+                                    Send Message
+                                </Button>
+                            </form>
+                        </motion.div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Floating WhatsApp Button */}
+            <a
+                href="https://wa.me/923001234567"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="fixed bottom-8 right-8 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg hover:bg-[#128C7E] hover:-translate-y-1 transition-all duration-300"
+                aria-label="Contact on WhatsApp"
             >
-              Get in <span className="text-primary">Touch</span>
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="mt-4 text-lg text-muted-foreground"
-            >
-              Have questions about EZORDER? We're here to help. Reach out through any of the channels below.
-            </motion.p>
-          </div>
-
-          <div className="mt-16 grid gap-12 lg:grid-cols-2">
-            {/* Contact Info */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-              className="space-y-8"
-            >
-              <div>
-                <h2 className="font-heading text-2xl font-bold text-foreground">
-                  Contact Information
-                </h2>
-                <p className="mt-2 text-muted-foreground">
-                  We typically respond within 24 hours during business days.
-                </p>
-              </div>
-
-              <div className="space-y-6">
-                <div className="flex items-start gap-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                    <Mail className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <h3 className="font-heading font-semibold text-foreground">Email</h3>
-                    <a
-                      href={`mailto:${SUPPORT_EMAIL}`}
-                      className="text-muted-foreground hover:text-primary"
-                    >
-                      {SUPPORT_EMAIL}
-                    </a>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                    <MessageCircle className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <h3 className="font-heading font-semibold text-foreground">WhatsApp</h3>
-                    <a
-                      href={`https://wa.me/${WHATSAPP_BUSINESS}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-muted-foreground hover:text-primary"
-                    >
-                      +92 300 123 4567
-                    </a>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                    <MapPin className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <h3 className="font-heading font-semibold text-foreground">Location</h3>
-                    <p className="text-muted-foreground">
-                      Lahore, Pakistan
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Contact Form */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 }}
-              className="card-elevated p-6 sm:p-8"
-            >
-              <h2 className="font-heading text-xl font-bold text-foreground">
-                Send us a Message
-              </h2>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Fill out the form below and we'll get back to you.
-              </p>
-
-              <form onSubmit={handleSubmit} className="mt-6 space-y-5">
-                {/* Honeypot field - hidden from users */}
-                <input
-                  type="text"
-                  name="website"
-                  value={honeypot}
-                  onChange={(e) => setHoneypot(e.target.value)}
-                  className="absolute -left-full opacity-0"
-                  tabIndex={-1}
-                  autoComplete="off"
-                />
-
-                <div>
-                  <Label htmlFor="name">Name *</Label>
-                  <Input
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    placeholder="Your name"
-                    className="mt-1.5"
-                    maxLength={100}
-                    required
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="email">Email *</Label>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="your@email.com"
-                    className="mt-1.5"
-                    maxLength={255}
-                    required
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="phone">Phone (optional)</Label>
-                  <Input
-                    id="phone"
-                    name="phone"
-                    type="tel"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    placeholder="+92 300 123 4567"
-                    className="mt-1.5"
-                    maxLength={20}
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="message">Message *</Label>
-                  <Textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    placeholder="How can we help you?"
-                    className="mt-1.5 min-h-[120px]"
-                    maxLength={1000}
-                    required
-                  />
-                </div>
-
-                <Button type="submit" className="w-full" disabled={isSubmitting}>
-                  {isSubmitting ? (
-                    "Sending..."
-                  ) : (
-                    <>
-                      Send Message
-                      <Send className="ml-2 h-4 w-4" />
-                    </>
-                  )}
-                </Button>
-              </form>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-    </Layout>
-  );
+                <MessageCircle className="h-8 w-8" />
+            </a>
+        </Layout>
+    );
 };
 
 export default Contact;
