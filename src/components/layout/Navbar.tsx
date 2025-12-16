@@ -32,7 +32,7 @@ export function Navbar() {
       <nav className="section-container flex h-16 items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 font-heading text-xl font-bold">
-          <img src={logo} alt="EZORDER Logo" className="h-10 w-auto object-contain" />
+          <img src={logo} alt="EZORDER Logo" className="h-8 w-auto object-contain" />
         </Link>
 
         {/* Desktop Navigation */}

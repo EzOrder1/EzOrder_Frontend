@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { MessageCircle, ArrowRight, Bike } from "lucide-react";
+import { MessageCircle, ArrowRight, Store } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import heroIllustration from "@/assets/hero-illustration.png";
 
@@ -9,7 +9,7 @@ const WHATSAPP_MESSAGE = encodeURIComponent("Hi! I'd like to place an order.");
 
 export function HeroSection() {
   return (
-    <section className="relative overflow-hidden py-16 lg:py-24 bg-background">
+    <section className="relative overflow-hidden py-8 lg:py-12 bg-background">
       <div className="section-container">
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           {/* Content */}
@@ -19,13 +19,7 @@ export function HeroSection() {
             transition={{ duration: 0.6 }}
             className="text-center lg:text-left"
           >
-            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary shadow-sm hover:shadow-md transition-shadow">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75"></span>
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-primary"></span>
-              </span>
-              Now Live in Pakistan
-            </div>
+
 
             <h1 className="mt-6 font-heading text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
               Order Food Fast with{" "}
@@ -51,11 +45,11 @@ export function HeroSection() {
                   Order on WhatsApp
                 </a>
               </Button>
-              <Button asChild variant="outline" className="h-12 px-8 text-lg rounded-full hover:bg-secondary/10 hover:text-secondary border-secondary/20 transition-all duration-300">
-                <a href="#riders" className="gap-2">
-                  <Bike className="h-5 w-5" />
-                  Join as Rider
-                </a>
+              <Button asChild className="bg-gradient-to-r from-secondary to-sky-400 hover:shadow-glow-secondary text-white border-0 h-12 px-8 text-lg rounded-full transition-all duration-300 hover:-translate-y-1">
+                <Link to="/get-started" className="gap-2">
+                  <Store className="h-5 w-5" />
+                  Start Selling
+                </Link>
               </Button>
             </div>
 
