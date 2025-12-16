@@ -64,7 +64,15 @@ export function HowItWorksSection() {
           <div className="hidden md:block absolute top-[80px] left-[10%] right-[10%] h-[2px] border-t-2 border-dashed border-border/60 -z-10" />
 
           {steps.map((step, index) => {
-            const isIconStep = step.isIcon;
+            const mediaContent = step.isIcon ? (
+              <step.icon className="h-16 w-16" />
+            ) : (
+              <img
+                src={step.image}
+                alt={step.title}
+                className="h-full w-full object-cover p-2"
+              />
+            );
 
             return (
               <motion.div
@@ -90,15 +98,7 @@ export function HowItWorksSection() {
 
                   {/* Image/Icon Container */}
                   <div className={`relative h-40 w-40 rounded-full flex items-center justify-center shadow-sm border-4 border-white ring-1 ring-border/20 overflow-hidden ${step.isIcon ? step.color : 'bg-orange-50'}`}>
-                    {step.isIcon ? (
-                      <step.icon className="h-16 w-16" />
-                    ) : (
-                      <img
-                        src={step.image}
-                        alt={step.title}
-                        className="h-full w-full object-cover p-2"
-                      />
-                    )}
+                    {mediaContent}
                   </div>
                 </div>
 

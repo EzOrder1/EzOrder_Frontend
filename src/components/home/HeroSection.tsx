@@ -22,8 +22,9 @@ export function HeroSection() {
 
 
             <h1 className="mt-6 font-heading text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
-              Order Food Fast with{" "}
+              Order Food Fast
               <span className="block mt-2">
+                with{" "}
                 <span className="text-primary italic">ez</span>
                 <span className="text-secondary">Order</span>
               </span>
