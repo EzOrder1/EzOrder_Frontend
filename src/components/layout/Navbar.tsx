@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ChefHat, LogIn, Bike } from "lucide-react";
+import { Menu, X, LogIn, Bike } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import logo from "@/assets/logo.png";
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -31,13 +32,7 @@ export function Navbar() {
       <nav className="section-container flex h-16 items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 font-heading text-xl font-bold">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10">
-            <ChefHat className="h-5 w-5 text-primary" />
-          </div>
-          <span className="flex items-center">
-            <span className="text-primary">EZ</span>
-            <span className="text-secondary">ORDER</span>
-          </span>
+          <img src={logo} alt="EZORDER Logo" className="h-10 w-auto object-contain" />
         </Link>
 
         {/* Desktop Navigation */}
