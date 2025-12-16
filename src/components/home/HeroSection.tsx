@@ -100,7 +100,7 @@ export function HeroSection() {
                 height={400}
               />
 
-              {/* Floating Cards */}
+              Floating Cards
               <motion.div
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
