@@ -1,16 +1,13 @@
 import { Layout } from "@/components/layout/Layout";
-import { motion } from "framer-motion";
-import { Mail, MapPin, Phone, Send, Twitter, Linkedin, MessageCircle } from "lucide-react";
+import { Mail, MapPin, Phone, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 import logo from "@/assets/logo.png";
 
 const Contact = () => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        // Form submission logic would go here
         console.log("Form submitted");
     };
 
@@ -19,32 +16,17 @@ const Contact = () => {
             <section className="relative overflow-hidden py-12 lg:py-20 bg-background pt-24">
                 <div className="section-container">
                     <div className="text-center mb-16">
-                        <motion.h1
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5 }}
-                            className="text-4xl font-heading font-bold tracking-tight text-foreground sm:text-5xl"
-                        >
+                        <h1 className="text-4xl font-heading font-bold tracking-tight text-foreground sm:text-5xl">
                             Contact Us
-                        </motion.h1>
-                        <motion.p
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: 0.1 }}
-                            className="mt-4 text-lg text-muted-foreground"
-                        >
+                        </h1>
+                        <p className="mt-4 text-lg text-muted-foreground">
                             Have a question or need support? Get in touch with us!
-                        </motion.p>
+                        </p>
                     </div>
 
                     <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
                         {/* Contact Information */}
-                        <motion.div
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.5, delay: 0.2 }}
-                            className="card-elevated p-8 bg-card rounded-3xl"
-                        >
+                        <div className="card-elevated p-8 bg-card rounded-3xl">
                             <div className="flex items-center gap-4 mb-8">
                                 <div className="relative h-20 w-20 overflow-hidden rounded-full border-2 border-border bg-white p-1">
                                     <img
@@ -52,7 +34,6 @@ const Contact = () => {
                                         alt="EzOrder Support"
                                         className="h-full w-full object-contain"
                                     />
-                                    {/* Removed overlay to make logo clear */}
                                 </div>
                                 <div>
                                     <h3 className="text-xl font-bold font-heading">Get in Touch</h3>
@@ -94,22 +75,12 @@ const Contact = () => {
                                 <a href="#" className="h-10 w-10 flex items-center justify-center rounded-lg bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-white transition-colors">
                                     <MessageCircle className="h-5 w-5" />
                                 </a>
-                                <a href="#" className="h-10 w-10 flex items-center justify-center rounded-lg bg-[#1DA1F2]/10 text-[#1DA1F2] hover:bg-[#1DA1F2] hover:text-white transition-colors">
-                                    <Twitter className="h-5 w-5" />
-                                </a>
-                                <a href="#" className="h-10 w-10 flex items-center justify-center rounded-lg bg-[#0077B5]/10 text-[#0077B5] hover:bg-[#0077B5] hover:text-white transition-colors">
-                                    <Linkedin className="h-5 w-5" />
-                                </a>
+                                {/* Removed potentially crashing brand icons */}
                             </div>
-                        </motion.div>
+                        </div>
 
                         {/* Contact Form */}
-                        <motion.div
-                            initial={{ opacity: 0, x: 20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.5, delay: 0.3 }}
-                            className="card-elevated p-8 bg-card rounded-3xl h-fit"
-                        >
+                        <div className="card-elevated p-8 bg-card rounded-3xl h-fit">
                             <h2 className="text-2xl font-bold font-heading mb-6">Send Us a Message</h2>
 
                             <form onSubmit={handleSubmit} className="space-y-4">
@@ -169,7 +140,7 @@ const Contact = () => {
                                     Send Message
                                 </Button>
                             </form>
-                        </motion.div>
+                        </div>
                     </div>
                 </div>
             </section>

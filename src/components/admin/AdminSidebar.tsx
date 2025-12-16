@@ -1,14 +1,13 @@
 import {
     LayoutDashboard,
-    ShoppingBag,
     List,
     Users,
     BarChart,
     Map,
-    FileText,
-    LogOut,
+    ShoppingBag,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import logo from "@/assets/logo.png";
 
 interface AdminSidebarProps {
     activeSection: string;
@@ -55,11 +54,13 @@ export function AdminSidebar({ activeSection, setActiveSection }: AdminSidebarPr
     return (
         <aside className="fixed left-0 top-0 z-40 h-screen w-64 border-r border-slate-800 bg-slate-900 text-slate-300 transition-transform shadow-xl">
             <div className="flex h-16 items-center border-b border-slate-800 px-6 backdrop-blur-sm bg-slate-900/50">
-                <div className="flex items-center gap-2">
-                    <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
-                        <ShoppingBag className="h-5 w-5 text-white" />
-                    </div>
-                    <span className="text-xl font-bold tracking-tight text-white bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
+                <div className="flex items-center gap-3">
+                    <img
+                        src={logo}
+                        alt="EzOrder logo"
+                        className="h-9 w-auto object-contain"
+                    />
+                    <span className="text-xl font-bold tracking-tight text-white">
                         EzOrder
                     </span>
                 </div>

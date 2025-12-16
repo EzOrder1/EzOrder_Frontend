@@ -163,7 +163,7 @@ const AdminDashboard = () => {
         // It's a new order!
         setUnreadNotifications((prev) => prev + 1);
         toast({
-          title: "New Order Received! 🔔",
+          title: "New Order Received!",
           description: `Order #${latestOrder.order_number} from ${latestOrder.user_name}`,
           duration: 5000,
           className: "bg-emerald-50 border-emerald-200",
