@@ -1,11 +1,21 @@
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, LucideIcon } from "lucide-react";
 import howStep1Connect from "@/assets/how-step1-connect.png";
 import howStep2Browse from "@/assets/how-step2-browse.png";
 import howStep3Order from "@/assets/how-step3-order.png";
 import howStep4Enjoy from "@/assets/how-step4-enjoy.png";
 
-const steps = [
+type Step = {
+  number: string;
+  title: string;
+  description: string;
+  isIcon: boolean;
+  image?: string;
+  icon?: LucideIcon;
+  color?: string;
+};
+
+const steps: Step[] = [
   {
     number: "1",
     title: "Connect",
@@ -53,50 +63,54 @@ export function HowItWorksSection() {
           {/* Dashed Connecting Line (Desktop) */}
           <div className="hidden md:block absolute top-[80px] left-[10%] right-[10%] h-[2px] border-t-2 border-dashed border-border/60 -z-10" />
 
-          {steps.map((step, index) => (
-            <motion.div
-              key={step.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="relative flex flex-col items-center text-center group"
-            >
-              {/* Arrow for steps 1-3 (Mobile/Desktop adjustment usually needed, keeping simple loop for now) */}
-              {index < steps.length - 1 && (
-                <div className="md:hidden absolute -bottom-6 left-1/2 -translate-x-1/2 text-muted-foreground/30 rotate-90">
-                  <ArrowRight className="h-6 w-6" />
-                </div>
-              )}
+          {steps.map((step, index) => {
+            const isIconStep = step.isIcon;
 
-              <div className="relative mb-6">
-                {/* Step Number Badge */}
-                <div className="absolute -top-2 -right-2 h-8 w-8 rounded-full bg-primary text-white flex items-center justify-center font-bold shadow-md z-10">
-                  {step.number}
+            return (
+              <motion.div
+                key={step.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="relative flex flex-col items-center text-center group"
+              >
+                {/* Arrow for steps 1-3 (Mobile/Desktop adjustment usually needed, keeping simple loop for now) */}
+                {index < steps.length - 1 && (
+                  <div className="md:hidden absolute -bottom-6 left-1/2 -translate-x-1/2 text-muted-foreground/30 rotate-90">
+                    <ArrowRight className="h-6 w-6" />
+                  </div>
+                )}
+
+                <div className="relative mb-6">
+                  {/* Step Number Badge */}
+                  <div className="absolute -top-2 -right-2 h-8 w-8 rounded-full bg-primary text-white flex items-center justify-center font-bold shadow-md z-10">
+                    {step.number}
+                  </div>
+
+                  {/* Image/Icon Container */}
+                  <div className={`relative h-40 w-40 rounded-full flex items-center justify-center shadow-sm border-4 border-white ring-1 ring-border/20 overflow-hidden ${step.isIcon ? step.color : 'bg-orange-50'}`}>
+                    {step.isIcon ? (
+                      <step.icon className="h-16 w-16" />
+                    ) : (
+                      <img
+                        src={step.image}
+                        alt={step.title}
+                        className="h-full w-full object-cover p-2"
+                      />
+                    )}
+                  </div>
                 </div>
 
-                {/* Image/Icon Container */}
-                <div className={`relative h-40 w-40 rounded-full flex items-center justify-center shadow-sm border-4 border-white ring-1 ring-border/20 overflow-hidden ${step.isIcon ? step.color : 'bg-orange-50'}`}>
-                  {step.isIcon ? (
-                    <step.icon className="h-16 w-16" />
-                  ) : (
-                    <img
-                      src={step.image}
-                      alt={step.title}
-                      className="h-full w-full object-cover p-2"
-                    />
-                  )}
-                </div>
-              </div>
-
-              <h3 className="font-heading text-xl font-bold text-foreground mb-2">
-                {step.number}. {step.title}
-              </h3>
-              <p className="text-muted-foreground">
-                {step.description}
-              </p>
-            </motion.div>
-          ))}
+                <h3 className="font-heading text-xl font-bold text-foreground mb-2">
+                  {step.number}. {step.title}
+                </h3>
+                <p className="text-muted-foreground">
+                  {step.description}
+                </p>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>
