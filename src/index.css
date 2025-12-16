@@ -13,12 +13,18 @@
 @layer base {
   :root {
     /* EZORDER Brand Colors - HSL Format */
-    --primary: 145 59% 48%;
+    /* Lime Green #88C456 -> 93deg 48% 55% */
+    --primary: 93 48% 55%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 145 59% 58%;
+    --primary-glow: 93 48% 65%;
     
-    --secondary: 32 92% 60%;
+    /* Sky Blue #5999C9 -> 206deg 50% 57% */
+    --secondary: 206 50% 57%;
     --secondary-foreground: 0 0% 100%;
+    
+    /* Warm Orange #FCB752 -> 36deg 96% 65% */
+    --accent: 36 96% 65%;
+    --accent-foreground: 36 96% 20%;
     
     --background: 210 17% 98%;
     --foreground: 222 47% 11%;
@@ -32,36 +38,33 @@
     --muted: 210 20% 96%;
     --muted-foreground: 215 16% 47%;
     
-    --accent: 32 92% 95%;
-    --accent-foreground: 32 92% 40%;
-    
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
     
     --border: 214 20% 90%;
     --input: 214 20% 90%;
-    --ring: 145 59% 48%;
+    --ring: 93 48% 55%;
     
     --radius: 0.5rem;
     
     /* Custom shadows */
-    --shadow-card: 0 6px 18px rgba(16, 24, 40, 0.06);
-    --shadow-elevated: 0 12px 32px rgba(16, 24, 40, 0.12);
-    --shadow-glow-primary: 0 8px 24px hsla(145, 59%, 48%, 0.25);
-    --shadow-glow-secondary: 0 8px 24px hsla(32, 92%, 60%, 0.25);
+    --shadow-card: 0 6px 18px rgba(136, 196, 86, 0.1);
+    --shadow-elevated: 0 12px 32px rgba(136, 196, 86, 0.15);
+    --shadow-glow-primary: 0 8px 24px hsla(93, 48%, 55%, 0.25);
+    --shadow-glow-secondary: 0 8px 24px hsla(206, 50%, 57%, 0.25);
     
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(145, 59%, 48%), hsl(145, 59%, 40%));
-    --gradient-secondary: linear-gradient(135deg, hsl(32, 92%, 60%), hsl(32, 92%, 50%));
-    --gradient-hero: linear-gradient(180deg, hsl(210, 17%, 98%) 0%, hsl(145, 30%, 96%) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(93, 48%, 55%), hsl(93, 48%, 45%));
+    --gradient-secondary: linear-gradient(135deg, hsl(206, 50%, 57%), hsl(206, 50%, 47%));
+    --gradient-hero: linear-gradient(180deg, hsl(210, 17%, 98%) 0%, hsl(93, 30%, 96%) 100%);
     
     /* Sidebar - keep existing */
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 145 59% 48%;
+    --sidebar-primary: 93 48% 55%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 145 30% 96%;
-    --sidebar-accent-foreground: 145 59% 30%;
+    --sidebar-accent: 93 30% 96%;
+    --sidebar-accent-foreground: 93 48% 30%;
     --sidebar-border: 214 20% 90%;
     --sidebar-ring: 145 59% 48%;
   }

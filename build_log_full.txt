@@ -1,0 +1,31 @@
+
+> vite_react_shadcn_ts@0.0.0 build
+> vite build
+
+[36mvite v5.4.21 [32mbuilding for production...[36m[39m
+transforming...
+Browserslist: browsers data (caniuse-lite) is 6 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+[32m✓[39m 3021 modules transformed.
+[31mx[39m Build failed in 20.34s
+[31merror during build:
+[31msrc/components/home/HighlightsSection.tsx (2:9): "MessageSquareCheck" is not exported by "node_modules/lucide-react/dist/esm/lucide-react.js", imported by "src/components/home/HighlightsSection.tsx".[31m
+file: [36mD:/Nexus Nao/PROJECTS/EZORDER/PROJECT/frontend/src/components/home/HighlightsSection.tsx:2:9[31m
+[33m
+1: import { motion } from "framer-motion";
+2: import { MessageSquareCheck, ClipboardCheck, ShieldCheck, Users } from "lucide-react";
+            ^
+3: import highlightSpeed from "@/assets/highlight-speed.png";
+4: import highlightMultilingual from "@/assets/highlight-multilingual.png";
+[31m
+    at getRollupError (file:///D:/Nexus%20Nao/PROJECTS/EZORDER/PROJECT/frontend/node_modules/rollup/dist/es/shared/parseAst.js:395:41)
+    at error (file:///D:/Nexus%20Nao/PROJECTS/EZORDER/PROJECT/frontend/node_modules/rollup/dist/es/shared/parseAst.js:391:42)
+    at Module.error (file:///D:/Nexus%20Nao/PROJECTS/EZORDER/PROJECT/frontend/node_modules/rollup/dist/es/shared/node-entry.js:15535:16)
+    at Module.traceVariable (file:///D:/Nexus%20Nao/PROJECTS/EZORDER/PROJECT/frontend/node_modules/rollup/dist/es/shared/node-entry.js:15984:29)
+    at ModuleScope.findVariable (file:///D:/Nexus%20Nao/PROJECTS/EZORDER/PROJECT/frontend/node_modules/rollup/dist/es/shared/node-entry.js:13770:39)
+    at Identifier.bind (file:///D:/Nexus%20Nao/PROJECTS/EZORDER/PROJECT/frontend/node_modules/rollup/dist/es/shared/node-entry.js:5035:40)
+    at Property.bind (file:///D:/Nexus%20Nao/PROJECTS/EZORDER/PROJECT/frontend/node_modules/rollup/dist/es/shared/node-entry.js:2855:23)
+    at ObjectExpression.bind (file:///D:/Nexus%20Nao/PROJECTS/EZORDER/PROJECT/frontend/node_modules/rollup/dist/es/shared/node-entry.js:2851:28)
+    at ArrayExpression.bind (file:///D:/Nexus%20Nao/PROJECTS/EZORDER/PROJECT/frontend/node_modules/rollup/dist/es/shared/node-entry.js:2851:28)
+    at VariableDeclarator.bind (file:///D:/Nexus%20Nao/PROJECTS/EZORDER/PROJECT/frontend/node_modules/rollup/dist/es/shared/node-entry.js:2855:23)[39m

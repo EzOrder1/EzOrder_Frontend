@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ChefHat, LogIn } from "lucide-react";
+import { Menu, X, ChefHat, LogIn, Bike } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -30,11 +30,14 @@ export function Navbar() {
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <nav className="section-container flex h-16 items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 font-heading text-xl font-bold text-foreground">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
-            <ChefHat className="h-5 w-5 text-primary-foreground" />
+        <Link to="/" className="flex items-center gap-2 font-heading text-xl font-bold">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10">
+            <ChefHat className="h-5 w-5 text-primary" />
           </div>
-          <span>EZORDER</span>
+          <span className="flex items-center">
+            <span className="text-primary">EZ</span>
+            <span className="text-secondary">ORDER</span>
+          </span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -53,6 +56,19 @@ export function Navbar() {
               {link.name}
             </Link>
           ))}
+          <a /* Using a for anchor to scroll to ID if on same page, or navigate */
+            href="#riders"
+            onClick={(e) => {
+              // Simple hash navigation fix
+              if (location.pathname !== '/') return;
+              e.preventDefault();
+              const element = document.getElementById('riders');
+              element?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary cursor-pointer"
+          >
+            Payload Rider
+          </a>
         </div>
 
         {/* Desktop CTA */}
@@ -98,6 +114,13 @@ export function Navbar() {
                 {link.name}
               </Link>
             ))}
+            <a
+              href="#riders"
+              onClick={() => setIsOpen(false)}
+              className="py-2 text-sm font-medium text-muted-foreground transition-colors"
+            >
+              Payload Rider
+            </a>
             <hr className="border-border" />
             <Link
               to={isAdmin ? "/admin/dashboard" : "/admin/login"}
