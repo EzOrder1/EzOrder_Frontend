@@ -14,15 +14,9 @@ export function RiderSection() {
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
                     >
-                        <div className="inline-flex items-center gap-2 rounded-full border border-secondary/20 bg-secondary/10 px-4 py-1.5 text-sm font-medium text-secondary">
-                            <span className="relative flex h-2 w-2">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
-                                <span className="relative inline-flex h-2 w-2 rounded-full bg-secondary"></span>
-                            </span>
-                            Hiring Now
-                        </div>
+                        
                         <h2 className="mt-6 font-heading text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-                            Become an <span className="text-primary">EZ</span><span className="text-secondary">RIDER</span>
+                            Become an <span className="text-primary">ez</span><span className="text-secondary">Rider</span>
                         </h2>
                         <p className="mt-4 text-lg text-muted-foreground">
                             Earn money on your own schedule. Join our growing fleet of delivery partners and deliver smiles with every mile.
