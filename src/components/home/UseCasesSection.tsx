@@ -39,7 +39,6 @@ export function UseCasesSection() {
             viewport={{ once: true }}
             className="font-heading text-sm font-semibold uppercase tracking-wider text-primary"
           >
-            Where it fits
           </motion.span>
           <motion.h2
             initial={{ opacity: 0, y: 10 }}
