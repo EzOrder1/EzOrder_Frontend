@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, LayoutDashboard, MessageSquare, Mic, Sparkles } from "lucide-react";
+import { ArrowRight, LayoutDashboard, MessageSquare, Mic, Smile, Sparkles } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -15,7 +15,7 @@ type Perk = {
 };
 
 type ChatMessage = {
-  sender: "Customer" | "EZORDER Bot" | "Dashboard";
+  sender: "Shaikh Ali" | "Mohsin Foods" | "Dashboard";
   tone: "customer" | "bot" | "dashboard";
   text: string;
   time: string;
@@ -25,21 +25,21 @@ type ChatMessage = {
 const perks: Perk[] = [
   {
     id: "voice",
-    title: "Voice → text instantly 🎙️",
+    title: "Voice-to-text, instantly",
     description: "Urdu / Roman Urdu voice notes turn into clean order details.",
     icon: Mic,
     tone: "accent",
   },
   {
     id: "smart-suggest",
-    title: "Smart add-on suggestions ✨",
+    title: "Smart add-on suggestions",
     description: "The bot nudges fries, drinks, and extras at the right time.",
     icon: Sparkles,
     tone: "primary",
   },
   {
     id: "sync",
-    title: "Auto-sync to dashboard 📊",
+    title: "Auto-sync to dashboard",
     description: "Orders appear with address, status, and a ready kitchen ticket.",
     icon: LayoutDashboard,
     tone: "secondary",
@@ -48,28 +48,28 @@ const perks: Perk[] = [
 
 const chatMessages: ChatMessage[] = [
   {
-    sender: "Customer",
+    sender: "Shaikh Ali",
     tone: "customer",
     text: "Assalam-o-Alaikum 👋 2 Chicken Biryanis 🍛🍛 + 1 Chicken Karahi 🍲 for delivery.",
     time: "8:12 pm",
     highlights: [],
   },
   {
-    sender: "Customer",
+    sender: "Shaikh Ali",
     tone: "customer",
-    text: "🎤 Voice note (0:07): “Mild please… Gulshan Block 5.”",
+    text: "🎤 Voice note (0:07): “Mild please… Gulshan Block 5 📍”",
     time: "8:12 pm",
     highlights: ["voice"],
   },
   {
-    sender: "EZORDER Bot",
+    sender: "Mohsin Foods",
     tone: "bot",
-    text: "Got it ✅ Mild 🙂 + Address 📍 Gulshan Block 5. Want to add drinks 🥤 or fries 🍟?",
+    text: "Got it ✅ Mild 🙂 Address saved 📍 Gulshan Block 5. Add soft drinks 🥤 or fries 🍟?",
     time: "8:13 pm",
     highlights: ["voice", "smart-suggest"],
   },
   {
-    sender: "Customer",
+    sender: "Shaikh Ali",
     tone: "customer",
     text: "Add 2 soft drinks 🥤🥤",
     time: "8:13 pm",
@@ -78,11 +78,14 @@ const chatMessages: ChatMessage[] = [
   {
     sender: "Dashboard",
     tone: "dashboard",
-    text: "Order #4821 created ✅ Items + address captured, kitchen ticket 🧾, rider assigned 🛵",
+    text: "Order #4821 created ✅ Kitchen ticket 🧾 ready • Rider assigned 🛵",
     time: "8:13 pm",
     highlights: ["sync"],
   },
 ];
+
+const CHAT_WALLPAPER_DATA_URI =
+  "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='180'%20height='180'%20viewBox='0%200%20180%20180'%3E%3Cg%20fill='none'%20stroke='%2388C456'%20stroke-opacity='0.14'%20stroke-width='3'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M42%2046h40c10%200%2018%208%2018%2018v8c0%2010-8%2018-18%2018H68l-14%2011v-11H42c-10%200-18-8-18-18v-8c0-10%208-18%2018-18z'/%3E%3Cpath%20d='M114%20114h34c9%200%2016%207%2016%2016v6c0%209-7%2016-16%2016h-10l-12%2010v-10h-12c-9%200-16-7-16-16v-6c0-9%207-16%2016-16z'/%3E%3Cpath%20d='M132%2046c0%2012-10%2022-22%2022s-22-10-22-22%2010-22%2022-22%2022%2010%2022%2022z'/%3E%3Cpath%20d='M96%2046h28'/%3E%3Cpath%20d='M52%20126h20'/%3E%3Cpath%20d='M48%20146h10'/%3E%3Cpath%20d='M26%20110h10'/%3E%3Cpath%20d='M150%2090h10'/%3E%3Cpath%20d='M124%2090h10'/%3E%3C/g%3E%3C/svg%3E";
 
 const toneStyles = {
   primary: {
@@ -104,20 +107,15 @@ export function ExperienceSection() {
 
   return (
     <section className="py-16 lg:py-24">
-      <div className="section-container grid gap-10 lg:grid-cols-12 lg:items-start">
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          className="lg:col-span-5"
-        >
+      <div className="section-container">
+        <div className="mx-auto max-w-3xl text-center">
           <motion.span
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="font-heading text-sm font-semibold uppercase tracking-wider text-primary"
           >
-            Live experience
+            
           </motion.span>
           <motion.h2
             initial={{ opacity: 0, y: 10 }}
@@ -126,7 +124,7 @@ export function ExperienceSection() {
             transition={{ delay: 0.05 }}
             className="mt-3 font-heading text-3xl font-bold tracking-tight text-foreground sm:text-4xl"
           >
-            What customers chat — and your team gets
+            What customers chat and your team gets
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 10 }}
@@ -135,10 +133,18 @@ export function ExperienceSection() {
             transition={{ delay: 0.1 }}
             className="mt-4 text-lg text-muted-foreground"
           >
-            No app. No training. Just WhatsApp 💬 in, clean orders out.
+            No app. No training. Just a familiar chat flow in, structured orders out.
           </motion.p>
+        </div>
 
-          <div className="mt-7 space-y-3">
+        <div className="mt-12 grid gap-10 lg:grid-cols-12 lg:items-start">
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          className="lg:col-span-5"
+        >
+          <div className="space-y-3">
             {perks.map((perk) => {
               const isActive = perk.id === activePerkId;
               const Icon = perk.icon;
@@ -175,7 +181,7 @@ export function ExperienceSection() {
             })}
           </div>
 
-          <div className="mt-8 flex flex-wrap gap-3 text-xs font-semibold">
+          <div className="mt-8 flex flex-wrap justify-center gap-3 text-xs font-semibold lg:justify-start">
             <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-primary">
               <MessageSquare className="h-4 w-4" />
               Customer chat
@@ -202,23 +208,37 @@ export function ExperienceSection() {
             <div className="pointer-events-none absolute -left-40 -bottom-48 h-96 w-96 rounded-full bg-secondary/10 blur-3xl" />
 
             <div className="relative z-10">
-              <div className="flex items-center justify-between gap-3 border-b border-border bg-background/70 px-5 py-4 backdrop-blur-sm">
+              <div className="flex items-center justify-between gap-3 border-b border-white/15 bg-primary px-5 py-4 text-primary-foreground">
                 <div className="flex items-center gap-3">
-                  <div className="grid h-10 w-10 place-items-center rounded-2xl bg-primary/10 text-primary ring-1 ring-primary/20">
+                  <div className="grid h-10 w-10 place-items-center rounded-2xl bg-white/15 text-white ring-1 ring-white/25">
                     <MessageSquare className="h-5 w-5" />
                   </div>
                   <div className="min-w-0">
-                    <p className="truncate text-sm font-semibold text-foreground">EZORDER on WhatsApp</p>
-                    <p className="truncate text-xs text-muted-foreground">Replies instantly ⚡ • Syncs automatically 📲</p>
+                    <p className="truncate text-sm font-semibold">Shafiq Restaurant</p>
+                    <p className="truncate text-xs text-primary-foreground/80">online</p>
                   </div>
                 </div>
-                <div className="hidden rounded-full bg-secondary/10 px-3 py-1 text-xs font-semibold text-secondary sm:inline-flex">
-                  Live preview 🟢
-                </div>
+                
               </div>
 
-              <div className="relative p-5 sm:p-6">
-                <div className="pointer-events-none absolute inset-0 opacity-[0.35] [background:radial-gradient(circle_at_20%_10%,rgba(136,196,86,0.18),transparent_45%),radial-gradient(circle_at_80%_20%,rgba(89,153,201,0.18),transparent_45%),radial-gradient(circle_at_50%_100%,rgba(252,183,82,0.14),transparent_55%)]" />
+              <div className="relative overflow-hidden bg-gradient-to-br from-primary/5 via-background to-secondary/5 p-5 sm:p-6">
+                <div
+                  className="pointer-events-none absolute inset-0 opacity-[0.75]"
+                  style={{
+                    backgroundImage: `url('${CHAT_WALLPAPER_DATA_URI}')`,
+                    backgroundRepeat: "repeat",
+                    backgroundSize: "180px 180px",
+                  }}
+                  aria-hidden
+                />
+                <div
+                  className="pointer-events-none absolute inset-0 opacity-[0.35]"
+                  style={{
+                    background:
+                      "radial-gradient(circle_at_20%_10%,rgba(136,196,86,0.20),transparent_45%),radial-gradient(circle_at_80%_20%,rgba(89,153,201,0.18),transparent_45%),radial-gradient(circle_at_50%_100%,rgba(252,183,82,0.12),transparent_55%)",
+                  }}
+                  aria-hidden
+                />
 
                 <div className="relative space-y-4">
                   {chatMessages.map((message, index) => {
@@ -268,8 +288,7 @@ export function ExperienceSection() {
 
                           {message.tone === "dashboard" && (
                             <div className="mt-3 flex items-center gap-2 text-xs font-semibold text-secondary">
-                              <LayoutDashboard className="h-4 w-4" />
-                              Synced to dashboard in real time
+                              
                             </div>
                           )}
                         </div>
@@ -278,15 +297,16 @@ export function ExperienceSection() {
                   })}
 
                   <div className="mt-6 flex items-center gap-3 rounded-2xl border border-border bg-background/70 px-4 py-3 text-sm text-muted-foreground shadow-sm backdrop-blur-sm">
-                    <span className="text-base">😊</span>
+                    <Smile className="h-5 w-5 text-muted-foreground" />
                     <span className="flex-1">Type a message…</span>
-                    <span className="text-base">🎤</span>
+                    <Mic className="h-5 w-5 text-muted-foreground" />
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </motion.div>
+        </div>
       </div>
     </section>
   );
