@@ -15,7 +15,7 @@ type Perk = {
 };
 
 type ChatMessage = {
-  sender: "Shaikh Ali" | "Mohsin Foods" | "Dashboard";
+  sender: "Shaikh Ali" | "Shafiq Restaurant" | "Shafiq Restaurant";
   tone: "customer" | "bot" | "dashboard";
   text: string;
   time: string;
@@ -62,7 +62,7 @@ const chatMessages: ChatMessage[] = [
     highlights: ["voice"],
   },
   {
-    sender: "Mohsin Foods",
+    sender: "Shafiq Restaurant",
     tone: "bot",
     text: "Got it ✅ Mild 🙂 Address saved 📍 Gulshan Block 5. Add soft drinks 🥤 or fries 🍟?",
     time: "8:13 pm",
@@ -76,7 +76,7 @@ const chatMessages: ChatMessage[] = [
     highlights: ["smart-suggest"],
   },
   {
-    sender: "Dashboard",
+    sender: "Shafiq Restaurant",
     tone: "dashboard",
     text: "Order #4821 created ✅ Kitchen ticket 🧾 ready • Rider assigned 🛵",
     time: "8:13 pm",
