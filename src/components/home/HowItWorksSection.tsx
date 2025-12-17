@@ -59,7 +59,7 @@ export function HowItWorksSection() {
           </p>
         </div>
 
-        <div className="relative grid gap-8 md:grid-cols-4">
+        <div className="relative mt-10 grid gap-8 md:grid-cols-4">
           {/* Dashed Connecting Line (Desktop) */}
           <div className="hidden md:block absolute top-[80px] left-[10%] right-[10%] h-[2px] border-t-2 border-dashed border-border/60 -z-10" />
 

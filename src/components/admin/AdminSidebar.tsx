@@ -81,7 +81,7 @@ export function AdminSidebar({ activeSection, setActiveSection }: AdminSidebarPr
                                             className={cn(
                                                 "group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200",
                                                 isActive
-                                                    ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md shadow-indigo-900/20"
+                                                    ? "bg-secondary text-secondary-foreground shadow-md"
                                                     : "text-slate-400 hover:bg-slate-800 hover:text-white"
                                             )}
                                         >
