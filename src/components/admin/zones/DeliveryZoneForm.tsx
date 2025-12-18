@@ -158,7 +158,7 @@ export function DeliveryZoneForm({
                         >
                             Cancel
                         </Button>
-                        <Button type="submit" disabled={isLoading} className="bg-gradient-to-r from-indigo-600 to-violet-600">
+                        <Button type="submit" disabled={isLoading} className="bg-primary text-primary-foreground hover:bg-primary/90">
                             {isLoading ? "Saving..." : initialData ? "Update Zone" : "Add Zone"}
                         </Button>
                     </DialogFooter>

@@ -127,7 +127,7 @@ export function DeliveryZoneList() {
                                     <TableRow key={zone.id}>
                                         <TableCell className="font-medium">
                                             <div className="flex items-center">
-                                                <MapPin className="mr-2 h-4 w-4 text-indigo-500" />
+                                                <MapPin className="mr-2 h-4 w-4 text-primary" />
                                                 {zone.name}
                                             </div>
                                         </TableCell>

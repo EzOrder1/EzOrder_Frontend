@@ -33,7 +33,7 @@ export function OrderManager({ onOrderClick }: OrderManagerProps) {
         queryKey: ["orders-bulk"],
         queryFn: async () => {
             // Fetching 100 most recent for management
-            const res = await api.get("/api/v1/orders", { params: { limit: 100 } });
+            const res = await api.get("/api/v1/orders/", { params: { limit: 100 } });
             return res.data.orders as Order[];
         },
     });

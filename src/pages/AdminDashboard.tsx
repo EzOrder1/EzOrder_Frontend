@@ -119,6 +119,7 @@ const AdminDashboard = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const [authorized, setAuthorized] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
   const [userName, setUserName] = useState<string>("Admin");
   const [activeSection, setActiveSection] = useState("dashboard");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -146,7 +147,7 @@ const AdminDashboard = () => {
   const { data: latestOrder } = useQuery({
     queryKey: ["latest-orders-poll"],
     queryFn: async () => {
-      const res = await api.get("/api/v1/orders", { params: { limit: 1 } });
+      const res = await api.get("/api/v1/orders/", { params: { limit: 1 } });
       return res.data.orders[0] as Order;
     },
     refetchInterval: 30000,
@@ -193,6 +194,7 @@ const AdminDashboard = () => {
 
     if (!token || !storedUser) {
       navigate("/admin/login");
+      setAuthChecked(true);
       return;
     }
 
@@ -210,8 +212,30 @@ const AdminDashboard = () => {
       }
     } catch {
       navigate("/admin/login");
+    } finally {
+      setAuthChecked(true);
     }
   }, [navigate, toast]);
+
+  useEffect(() => {
+    const media = window.matchMedia("(min-width: 1024px)");
+
+    const handle = () => {
+      if (media.matches) {
+        setIsSidebarOpen(false);
+      }
+    };
+
+    handle();
+
+    if (typeof media.addEventListener === "function") {
+      media.addEventListener("change", handle);
+      return () => media.removeEventListener("change", handle);
+    }
+
+    media.addListener(handle);
+    return () => media.removeListener(handle);
+  }, []);
 
   // Queries
   const statsQuery = useQuery({
@@ -235,7 +259,7 @@ const AdminDashboard = () => {
   const ordersQuery = useQuery({
     queryKey: ["orders", statusFilter],
     queryFn: async () => {
-      const res = await api.get("/api/v1/orders", {
+      const res = await api.get("/api/v1/orders/", {
         params: { status: statusFilter === "all" ? undefined : statusFilter, limit: 100 },
       });
       return res.data as OrderListResponse;
@@ -474,6 +498,17 @@ const AdminDashboard = () => {
   };
 
 
+  if (!authChecked) {
+    return (
+      <div className="grid min-h-screen place-items-center bg-slate-50 px-6">
+        <div className="flex items-center gap-3 rounded-2xl border border-border bg-background/80 px-4 py-3 text-sm text-muted-foreground shadow-sm backdrop-blur-sm">
+          <span className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent" aria-hidden />
+          Loading dashboard…
+        </div>
+      </div>
+    );
+  }
+
   if (!authorized) return null;
 
   return (
@@ -511,7 +546,7 @@ const AdminDashboard = () => {
             {/* Left side of header if needed */}
           </div>
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" className="relative text-slate-500 hover:text-indigo-600">
+            <Button variant="ghost" size="icon" className="relative text-slate-500 hover:text-primary">
               <Bell className="h-5 w-5" />
               {unreadNotifications > 0 && (
                 <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] text-white">
