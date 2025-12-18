@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640" role="img" aria-label="Growth plan illustration">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#F4FBEE"/>
+      <stop offset="0.5" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#EEF6FC"/>
+    </linearGradient>
+    <linearGradient id="b" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#5999C9"/>
+      <stop offset="1" stop-color="#3F86BD"/>
+    </linearGradient>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#88C456"/>
+      <stop offset="1" stop-color="#6FB53B"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="16" flood-color="#0B1220" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <rect width="960" height="640" rx="56" fill="url(#bg)"/>
+  <circle cx="140" cy="150" r="120" fill="#5999C9" opacity="0.12"/>
+  <circle cx="820" cy="520" r="150" fill="#88C456" opacity="0.12"/>
+  <circle cx="860" cy="140" r="80" fill="#FCB752" opacity="0.10"/>
+
+  <g filter="url(#shadow)">
+    <rect x="140" y="150" width="680" height="340" rx="40" fill="#FFFFFF"/>
+  </g>
+
+  <!-- Chart card -->
+  <g transform="translate(220 220)">
+    <rect x="0" y="0" width="520" height="260" rx="34" fill="#0B1220" opacity="0.05"/>
+    <rect x="14" y="14" width="492" height="232" rx="30" fill="#FFFFFF" stroke="#D6E6F3" stroke-width="4"/>
+    <rect x="34" y="40" width="150" height="18" rx="9" fill="url(#b)" opacity="0.9"/>
+    <rect x="34" y="76" width="220" height="14" rx="7" fill="#0B1220" opacity="0.08"/>
+
+    <!-- Axes -->
+    <path d="M60 210V110M60 210H450" stroke="#0B1220" stroke-opacity="0.10" stroke-width="8" stroke-linecap="round"/>
+
+    <!-- Growth line -->
+    <path d="M80 195L170 160L260 170L340 130L430 110" fill="none" stroke="url(#g)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="80" cy="195" r="9" fill="#88C456"/>
+    <circle cx="170" cy="160" r="9" fill="#88C456"/>
+    <circle cx="260" cy="170" r="9" fill="#88C456"/>
+    <circle cx="340" cy="130" r="9" fill="#88C456"/>
+    <circle cx="430" cy="110" r="9" fill="#88C456"/>
+
+    <!-- Highlight badge -->
+    <g transform="translate(380 40)">
+      <rect x="0" y="0" width="96" height="32" rx="16" fill="url(#b)" opacity="0.18"/>
+      <path d="M22 18l10-10 10 10" fill="none" stroke="url(#b)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="50" y="10" width="34" height="16" rx="8" fill="#0B1220" opacity="0.08"/>
+    </g>
+  </g>
+</svg>
+

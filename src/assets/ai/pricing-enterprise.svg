@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640" role="img" aria-label="Enterprise plan illustration">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#FFF5E6"/>
+      <stop offset="0.55" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#EEF6FC"/>
+    </linearGradient>
+    <linearGradient id="o" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#FCB752"/>
+      <stop offset="1" stop-color="#F3A93B"/>
+    </linearGradient>
+    <linearGradient id="b" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#5999C9"/>
+      <stop offset="1" stop-color="#3F86BD"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="16" flood-color="#0B1220" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <rect width="960" height="640" rx="56" fill="url(#bg)"/>
+  <circle cx="160" cy="130" r="110" fill="#FCB752" opacity="0.18"/>
+  <circle cx="820" cy="520" r="160" fill="#5999C9" opacity="0.10"/>
+  <circle cx="820" cy="140" r="110" fill="#88C456" opacity="0.10"/>
+
+  <g filter="url(#shadow)">
+    <rect x="140" y="150" width="680" height="340" rx="40" fill="#FFFFFF"/>
+  </g>
+
+  <!-- Building -->
+  <g transform="translate(240 210)">
+    <rect x="0" y="40" width="300" height="270" rx="30" fill="#0B1220" opacity="0.05"/>
+    <rect x="14" y="54" width="272" height="242" rx="26" fill="#FFFFFF" stroke="#E8E1D6" stroke-width="4"/>
+    <rect x="14" y="54" width="272" height="56" rx="26" fill="url(#o)" opacity="0.22"/>
+    <rect x="44" y="128" width="54" height="40" rx="12" fill="#0B1220" opacity="0.08"/>
+    <rect x="120" y="128" width="54" height="40" rx="12" fill="#0B1220" opacity="0.08"/>
+    <rect x="196" y="128" width="54" height="40" rx="12" fill="#0B1220" opacity="0.08"/>
+    <rect x="44" y="182" width="54" height="40" rx="12" fill="#0B1220" opacity="0.08"/>
+    <rect x="120" y="182" width="54" height="40" rx="12" fill="#0B1220" opacity="0.08"/>
+    <rect x="196" y="182" width="54" height="40" rx="12" fill="#0B1220" opacity="0.08"/>
+    <rect x="124" y="240" width="52" height="56" rx="14" fill="url(#o)" opacity="0.30"/>
+  </g>
+
+  <!-- Shield -->
+  <g transform="translate(590 240)">
+    <rect x="0" y="0" width="220" height="220" rx="34" fill="#0B1220" opacity="0.05"/>
+    <rect x="12" y="12" width="196" height="196" rx="30" fill="#FFFFFF" stroke="#D6E6F3" stroke-width="4"/>
+    <path d="M110 44c34 18 56 10 56 10v60c0 48-36 78-56 90-20-12-56-42-56-90V54s22 8 56-10z" fill="url(#b)" opacity="0.18" stroke="url(#b)" stroke-width="6" stroke-linejoin="round"/>
+    <path d="M86 114l18 18 38-44" fill="none" stroke="url(#b)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>
+
