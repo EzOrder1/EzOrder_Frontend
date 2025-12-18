@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeftRight, ArrowRight, AudioLines, LayoutDashboard, MessageSquare, Mic, Smile, Wand2 } from "lucide-react";
+import { ArrowLeftRight, AudioLines, MessageSquare, Mic, Smile, Wand2 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -15,7 +15,7 @@ type Perk = {
 };
 
 type ChatMessage = {
-  sender: "Shaikh Ali" | "Shafiq Restaurant" | "Shafiq Restaurant";
+  sender: "Shaikh Ali" | "Mohsin Foods" | "Mohsin Foods";
   tone: "customer" | "bot" | "dashboard";
   text: string;
   time: string;
@@ -62,7 +62,7 @@ const chatMessages: ChatMessage[] = [
     highlights: ["voice"],
   },
   {
-    sender: "Shafiq Restaurant",
+    sender: "Mohsin Foods",
     tone: "bot",
     text: "Got it ✅ Mild 🙂 Address saved 📍 Gulshan Block 5. Add soft drinks 🥤 or fries 🍟?",
     time: "8:13 pm",
@@ -76,7 +76,7 @@ const chatMessages: ChatMessage[] = [
     highlights: ["smart-suggest"],
   },
   {
-    sender: "Shafiq Restaurant",
+    sender: "Mohsin Foods",
     tone: "dashboard",
     text: "Order #4821 created ✅ Kitchen ticket 🧾 ready • Rider assigned 🛵",
     time: "8:13 pm",
@@ -113,19 +113,20 @@ const toneStyles = {
 
 export function ExperienceSection() {
   const [activePerkId, setActivePerkId] = useState<PerkId>("voice");
+  const activePerk = perks.find((perk) => perk.id === activePerkId) ?? perks[0];
 
   return (
     <section className="py-16 lg:py-24">
       <div className="section-container">
         <div className="mx-auto max-w-3xl text-center">
-          <motion.span
+          {/* <motion.span
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="font-heading text-sm font-semibold uppercase tracking-wider text-primary"
           >
-            
-          </motion.span>
+            Live experience
+          </motion.span> */}
           <motion.h2
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -153,102 +154,75 @@ export function ExperienceSection() {
             viewport={{ once: true }}
             className="lg:col-span-5"
           >
-            <div className="space-y-3">
-              {perks.map((perk) => {
-                const isActive = perk.id === activePerkId;
-                const Icon = perk.icon;
-                const styles = toneStyles[perk.tone];
+            <div className="space-y-6">
+              
 
-                return (
-                  <motion.button
-                    key={perk.id}
-                    type="button"
-                    onMouseEnter={() => setActivePerkId(perk.id)}
-                    onFocus={() => setActivePerkId(perk.id)}
-                    onClick={() => setActivePerkId(perk.id)}
-                    whileHover={{ y: -2 }}
-                    whileTap={{ scale: 0.99 }}
-                    aria-pressed={isActive}
-                    className={cn(
-                      "group relative w-full overflow-hidden rounded-2xl border border-border/60 bg-background/40 p-4 text-left shadow-sm backdrop-blur-sm transition-all duration-300 hover:bg-background/80 hover:shadow-elevated focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30",
-                      isActive && `ring-1 ${styles.active}`,
-                    )}
-                  >
-                    <div
-                      className={cn(
-                        "pointer-events-none absolute inset-0 bg-gradient-to-br opacity-0 transition-opacity duration-300",
-                        styles.glow,
-                        isActive ? "opacity-100" : "group-hover:opacity-70",
-                      )}
-                      aria-hidden
-                    />
+              <div className="relative max-w-md">
+                <div
+                  className="pointer-events-none absolute left-8 top-8 bottom-8 w-px bg-gradient-to-b from-accent/40 via-primary/40 to-secondary/40"
+                  aria-hidden
+                />
 
-                    <div className="relative flex items-start gap-4">
-                      <span
+                <div className="space-y-5">
+                  {perks.map((perk) => {
+                    const isActive = perk.id === activePerkId;
+                    const Icon = perk.icon;
+                    const styles = toneStyles[perk.tone];
+
+                    return (
+                      <motion.button
+                        key={perk.id}
+                        type="button"
+                        onMouseEnter={() => setActivePerkId(perk.id)}
+                        onFocus={() => setActivePerkId(perk.id)}
+                        onClick={() => setActivePerkId(perk.id)}
+                        whileHover={{ x: 4 }}
+                        whileTap={{ scale: 0.99 }}
+                        aria-pressed={isActive}
                         className={cn(
-                          "relative flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl ring-1 transition-transform duration-300 group-hover:scale-105",
-                          styles.icon,
+                          "group flex w-full items-center gap-4 rounded-2xl px-2 py-2 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30",
                         )}
                       >
-                        <Icon className="h-5 w-5" />
-                        {isActive && (
-                          <span className="absolute -right-1 -top-1 flex h-3 w-3 rounded-full bg-background ring-2 ring-background">
-                            <span className={cn("m-auto h-1.5 w-1.5 rounded-full", styles.dot)} />
-                          </span>
-                        )}
-                      </span>
-
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-start justify-between gap-3">
-                          <div className="min-w-0">
-                            <p className="text-sm font-semibold text-foreground">{perk.title}</p>
-                            <p className="mt-1 text-sm text-muted-foreground">{perk.description}</p>
-                          </div>
-
+                        <span
+                          className={cn(
+                            "relative grid h-12 w-12 shrink-0 place-items-center rounded-full shadow-sm transition-transform duration-300 group-hover:scale-105",
+                            isActive ? "ring-2" : "ring-1",
+                            styles.icon,
+                          )}
+                        >
+                          <Icon className="h-5 w-5" />
                           <span
                             className={cn(
-                              "inline-flex shrink-0 items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold transition-colors",
-                              isActive ? styles.badge : "bg-muted text-muted-foreground",
+                              "pointer-events-none absolute -right-0.5 -top-0.5 grid h-3.5 w-3.5 place-items-center rounded-full bg-background ring-2 ring-background transition-opacity",
+                              isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100",
+                            )}
+                            aria-hidden
+                          >
+                            <span className={cn("h-1.5 w-1.5 rounded-full", styles.dot)} />
+                          </span>
+                        </span>
+
+                        <div className="min-w-0 flex-1">
+                          <p
+                            className={cn(
+                              "text-sm font-semibold transition-colors",
+                              isActive ? "text-foreground" : "text-muted-foreground group-hover:text-foreground",
                             )}
                           >
-                            {isActive ? "Highlighted" : "Highlight"}
-                            <ArrowRight className={cn("h-3.5 w-3.5 transition-transform duration-300", !isActive && "group-hover:translate-x-0.5")} />
-                          </span>
+                            {perk.title}
+                          </p>
                         </div>
+                      </motion.button>
+                    );
+                  })}
+                </div>
+              </div>
 
-                        <div className="mt-3 flex items-center gap-2 text-xs text-muted-foreground">
-                          <span className={cn("h-1.5 w-1.5 rounded-full", styles.dot)} aria-hidden />
-                          Hover or tap to highlight matching chat messages
-                        </div>
-                      </div>
-                    </div>
-
-                    <div
-                      className={cn(
-                        "pointer-events-none absolute bottom-0 left-0 h-[3px] w-full origin-left bg-gradient-to-r from-primary via-secondary to-accent transition-transform duration-500",
-                        isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100",
-                      )}
-                      aria-hidden
-                    />
-                  </motion.button>
-                );
-              })}
+              <div>
+                <p className="text-sm font-semibold text-foreground">{activePerk.title}</p>
+                <p className="mt-2 text-sm text-muted-foreground">{activePerk.description}</p>
+              </div>
             </div>
-
-          <div className="mt-8 flex flex-wrap justify-center gap-3 text-xs font-semibold lg:justify-start">
-            <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-primary">
-              <MessageSquare className="h-4 w-4" />
-              Customer chat
-            </span>
-            <span className="inline-flex items-center gap-2 rounded-full bg-secondary/10 px-3 py-1 text-secondary">
-              <LayoutDashboard className="h-4 w-4" />
-              Admin dashboard
-            </span>
-            <span className="inline-flex items-center gap-2 rounded-full bg-muted px-3 py-1 text-foreground">
-              <Mic className="h-4 w-4" />
-              Voice friendly
-            </span>
-          </div>
         </motion.div>
 
         <motion.div
@@ -268,7 +242,7 @@ export function ExperienceSection() {
                     <MessageSquare className="h-5 w-5" />
                   </div>
                   <div className="min-w-0">
-                    <p className="truncate text-sm font-semibold">Shafiq Restaurant</p>
+                    <p className="truncate text-sm font-semibold">Mohsin Foods</p>
                     <p className="truncate text-xs text-primary-foreground/80">online</p>
                   </div>
                 </div>
