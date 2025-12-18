@@ -3,7 +3,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { BadgeCheck, Check, Headphones, ShieldCheck, Sparkles, Zap } from "lucide-react";
+import { BadgeCheck, Check, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import pricingTrial from "@/assets/ai/pricing-trial.svg";
@@ -279,44 +279,6 @@ const Pricing = () => {
                     </Button>
                   </div>
                 </motion.div>
-              );
-            })}
-          </div>
-
-          <div className="mt-16 grid gap-6 lg:grid-cols-3">
-            {[
-              {
-                title: "Fast setup",
-                description: "Go live quickly with guided onboarding.",
-                icon: Zap,
-                tone: "primary" as const,
-              },
-              {
-                title: "Secure by design",
-                description: "Role-based access for managers and staff.",
-                icon: ShieldCheck,
-                tone: "secondary" as const,
-              },
-              {
-                title: "Human support",
-                description: "Real help when you need it — not tickets only.",
-                icon: Headphones,
-                tone: "accent" as const,
-              },
-            ].map((item) => {
-              const Icon = item.icon;
-              const styles = toneStyles[item.tone];
-              return (
-                <div key={item.title} className="relative overflow-hidden rounded-2xl border border-border bg-card p-6 shadow-sm">
-                  <div className={cn("pointer-events-none absolute inset-0 bg-gradient-to-br opacity-60", styles.tint)} aria-hidden />
-                  <div className="relative">
-                    <div className={cn("flex h-12 w-12 items-center justify-center rounded-2xl ring-1", styles.icon)}>
-                      <Icon className="h-6 w-6" />
-                    </div>
-                    <h3 className="mt-4 font-heading text-lg font-semibold text-foreground">{item.title}</h3>
-                    <p className="mt-2 text-sm text-muted-foreground">{item.description}</p>
-                  </div>
-                </div>
               );
             })}
           </div>
