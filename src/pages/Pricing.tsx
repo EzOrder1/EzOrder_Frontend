@@ -265,7 +265,7 @@ const Pricing = () => {
                     {plan.note && <p className="mt-4 text-xs font-medium text-muted-foreground">{plan.note}</p>}
                   </div>
 
-                  <div className="relative mt-6">
+                  <div className="relative mt-auto pt-6">
                     <Button
                       asChild
                       variant={plan.cta.variant}
