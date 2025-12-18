@@ -93,7 +93,7 @@ export function DeliveryZoneList() {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <h2 className="text-3xl font-bold tracking-tight text-slate-800">Delivery Zones</h2>
-                <Button onClick={handleCreate} className="bg-gradient-to-r from-indigo-600 to-violet-600">
+                <Button onClick={handleCreate} className="bg-primary text-primary-foreground hover:bg-primary/90">
                     <Plus className="mr-2 h-4 w-4" /> Add Zone
                 </Button>
             </div>

@@ -32,7 +32,7 @@ const perks: Perk[] = [
   },
   {
     id: "smart-suggest",
-    title: "Smart add-on suggestions",
+    title: "Smart Order taking system",
     description: "Boost order value with timely, relevant upsell prompts.",
     icon: Wand2,
     tone: "primary",
@@ -147,7 +147,7 @@ export function ExperienceSection() {
           </motion.p>
         </div>
 
-        <div className="mt-12 grid gap-10 lg:grid-cols-12 lg:items-start">
+        <div className="mt-12 grid gap-10 lg:grid-cols-12 lg:items-center">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -159,7 +159,7 @@ export function ExperienceSection() {
 
               <div className="relative max-w-md">
                 <div
-                  className="pointer-events-none absolute left-8 top-8 bottom-8 w-px bg-gradient-to-b from-accent/40 via-primary/40 to-secondary/40"
+                  className="pointer-events-none absolute bottom-9 left-9 top-9 w-px bg-gradient-to-b from-accent/40 via-primary/40 to-secondary/40"
                   aria-hidden
                 />
 
@@ -185,12 +185,12 @@ export function ExperienceSection() {
                       >
                         <span
                           className={cn(
-                            "relative grid h-12 w-12 shrink-0 place-items-center rounded-full shadow-sm transition-transform duration-300 group-hover:scale-105",
+                            "relative grid h-14 w-14 shrink-0 place-items-center rounded-full shadow-sm transition-transform duration-300 group-hover:scale-105",
                             isActive ? "ring-2" : "ring-1",
                             styles.icon,
                           )}
                         >
-                          <Icon className="h-5 w-5" />
+                          <Icon className="h-6 w-6" />
                           <span
                             className={cn(
                               "pointer-events-none absolute -right-0.5 -top-0.5 grid h-3.5 w-3.5 place-items-center rounded-full bg-background ring-2 ring-background transition-opacity",
@@ -205,7 +205,7 @@ export function ExperienceSection() {
                         <div className="min-w-0 flex-1">
                           <p
                             className={cn(
-                              "text-sm font-semibold transition-colors",
+                              "text-base font-semibold transition-colors",
                               isActive ? "text-foreground" : "text-muted-foreground group-hover:text-foreground",
                             )}
                           >

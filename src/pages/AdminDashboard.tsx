@@ -669,7 +669,7 @@ const AdminDashboard = () => {
             <CustomerList orders={ordersQuery.data?.orders || []} />
           )}
 
-          {(activeSection !== "dashboard" && activeSection !== "orders" && activeSection !== "menu-items" && activeSection !== "categories" && activeSection !== "sales-report" && activeSection !== "customers" && activeSection !== "riders" && activeSection !== "bulk-update") && (
+          {(activeSection !== "dashboard" && activeSection !== "orders" && activeSection !== "menu-items" && activeSection !== "categories" && activeSection !== "sales-report" && activeSection !== "customers" && activeSection !== "riders" && activeSection !== "bulk-update" && activeSection !== "delivery-zones") && (
             <div className="flex h-[50vh] flex-col items-center justify-center text-center">
               <div className="rounded-full bg-gray-100 p-6">
                 <Search className="h-10 w-10 text-gray-400" />

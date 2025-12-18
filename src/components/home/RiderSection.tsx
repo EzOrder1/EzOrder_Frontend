@@ -83,11 +83,11 @@ export function RiderSection() {
                                 <Bike className="w-12 h-12 text-secondary" />
                             </div>
                             <h3 className="text-2xl font-bold text-foreground">Ready to start?</h3>
-                            <p className="mt-2 text-muted-foreground mb-6">Join thousands of riders delivering happiness.</p>
+                            <p className="mt-2 text-muted-foreground mb-6">Join our riders and be part of a team delivering happiness across the city.</p>
                             <div className="space-y-4">
                                 <div className="flex items-center gap-3 bg-white/60 p-3 rounded-lg backdrop-blur-sm">
                                     <div className="h-8 w-8 rounded-full bg-green-500 text-white flex items-center justify-center font-bold text-sm">1</div>
-                                    <p className="text-sm font-medium">Download the App</p>
+                                    <p className="text-sm font-medium">Apply for Registration</p>
                                 </div>
                                 <div className="flex items-center gap-3 bg-white/60 p-3 rounded-lg backdrop-blur-sm">
                                     <div className="h-8 w-8 rounded-full bg-green-500 text-white flex items-center justify-center font-bold text-sm">2</div>
