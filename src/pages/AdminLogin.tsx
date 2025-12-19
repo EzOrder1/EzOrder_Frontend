@@ -2,12 +2,13 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { motion } from "framer-motion";
-import { ChefHat, Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import api from "@/lib/api";
+import logo from "@/assets/logo.png";
 
 const AdminLogin = () => {
   const { toast } = useToast();
@@ -88,9 +89,7 @@ const AdminLogin = () => {
             className="mx-auto max-w-md"
           >
             <div className="text-center">
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-primary">
-                <ChefHat className="h-7 w-7 text-primary-foreground" />
-              </div>
+              <img src={logo} alt="EZORDER Logo" className="mx-auto h-12 w-auto object-contain" />
               <h1 className="mt-4 font-heading text-2xl font-bold text-foreground">
                 Admin Login
               </h1>

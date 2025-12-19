@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import logo from "@/assets/logo.png";
 
 const cuisineOptions = [
   "Pakistani",
@@ -141,7 +142,7 @@ const GetStarted = () => {
                 Registration Successful!
               </h1>
               <p className="mt-4 text-muted-foreground">
-                Thank you for registering with EZORDER. We've sent a verification email to{" "}
+                Thank you for registering with ezOrder. We've sent a verification email to{" "}
                 <strong className="text-foreground">{formData.email}</strong>.
               </p>
               <div className="mt-6 card-elevated p-6">
@@ -187,13 +188,19 @@ const GetStarted = () => {
       <section className="py-16 lg:py-24">
         <div className="section-container">
           <div className="mx-auto max-w-2xl text-center">
+            <motion.img
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mx-auto h-12 w-auto object-contain"
+              src={logo}
+              alt="EZORDER Logo"
+            />
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               className="font-heading text-4xl font-bold tracking-tight text-foreground sm:text-5xl"
             >
-              Get Started with{" "}
-              <span className="text-primary">EZORDER</span>
+              Get Started
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}

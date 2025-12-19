@@ -30,12 +30,17 @@ api.interceptors.response.use(
     (response) => response,
     (error) => {
         if (error.response && error.response.status === 401) {
-            // Clear token and redirect to login if 401 occurs
-            // But don't redirect if we are already on the login page to avoid loops
-            if (!window.location.pathname.includes('/login')) {
-                localStorage.removeItem('token');
-                localStorage.removeItem('user');
-                window.location.href = '/admin/login';
+            // Do not auto-logout on a single 401 (some endpoints may return 401 transiently).
+            // Let the UI decide what to do.
+            if (typeof window !== "undefined") {
+                window.dispatchEvent(
+                    new CustomEvent("ezorder:unauthorized", {
+                        detail: {
+                            url: error.config?.url,
+                            method: error.config?.method,
+                        },
+                    })
+                );
             }
         }
         return Promise.reject(error);
