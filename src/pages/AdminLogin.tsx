@@ -45,10 +45,13 @@ const AdminLogin = () => {
         password: formData.password,
       });
 
-      const { access_token, user } = response.data;
+      const { access_token, refresh_token, user } = response.data;
 
       // Store token and user data
       localStorage.setItem("token", access_token);
+      if (refresh_token) {
+        localStorage.setItem("refresh_token", refresh_token);
+      }
       localStorage.setItem("user", JSON.stringify(user));
 
       toast({

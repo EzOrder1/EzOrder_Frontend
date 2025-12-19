@@ -568,6 +568,7 @@ const AdminDashboard = () => {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => {
                   localStorage.removeItem("token");
+                  localStorage.removeItem("refresh_token");
                   localStorage.removeItem("user");
                   navigate("/admin/login");
                 }}>
