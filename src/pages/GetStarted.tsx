@@ -198,7 +198,7 @@ const GetStarted = () => {
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="font-heading text-4xl font-bold tracking-tight text-foreground sm:text-5xl"
+              className="mt-4 font-heading text-2xl font-bold text-foreground"
             >
               Get Started
             </motion.h1>
@@ -206,7 +206,7 @@ const GetStarted = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="mt-4 text-lg text-muted-foreground"
+              className="mt-2 text-muted-foreground"
             >
               Register your restaurant and start accepting orders via WhatsApp today. 
               Setup takes less than 5 minutes.
