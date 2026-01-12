@@ -4,6 +4,14 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Edit2, Trash2, Check, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
 
 interface CategoryManagerProps {
     categories: string[];
@@ -22,11 +30,20 @@ export function CategoryManager({
     const [newCategory, setNewCategory] = useState("");
     const [editingCategory, setEditingCategory] = useState<string | null>(null);
     const [renameValue, setRenameValue] = useState("");
+    const [isCreateOpen, setIsCreateOpen] = useState(false);
 
     const handleCreate = () => {
-        if (!newCategory.trim()) return;
+        if (!newCategory.trim()) {
+            toast({
+                title: "Category name required",
+                description: "Enter a name to create a category.",
+                variant: "destructive",
+            });
+            return;
+        }
         onCreate(newCategory.trim());
         setNewCategory("");
+        setIsCreateOpen(false);
     };
 
     const startEditing = (category: string) => {
@@ -51,13 +68,8 @@ export function CategoryManager({
                 <CardTitle className="text-lg">Categories</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-                <div className="flex gap-2">
-                    <Input
-                        placeholder="New category name"
-                        value={newCategory}
-                        onChange={(e) => setNewCategory(e.target.value)}
-                    />
-                    <Button onClick={handleCreate}>Add</Button>
+                <div className="flex justify-end">
+                    <Button onClick={() => setIsCreateOpen(true)}>Add</Button>
                 </div>
 
                 <div className="space-y-4">
@@ -107,6 +119,34 @@ export function CategoryManager({
                         <p className="text-center text-muted-foreground p-4">No categories defined yet.</p>
                     )}
                 </div>
+
+                <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
+                    <DialogContent className="sm:max-w-[420px]">
+                        <DialogHeader>
+                            <DialogTitle>Add Category</DialogTitle>
+                            <DialogDescription>Give your menu category a clear name.</DialogDescription>
+                        </DialogHeader>
+                        <div className="space-y-2">
+                            <Input
+                                placeholder="Category name"
+                                value={newCategory}
+                                onChange={(e) => setNewCategory(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter") {
+                                        e.preventDefault();
+                                        handleCreate();
+                                    }
+                                }}
+                            />
+                        </div>
+                        <DialogFooter>
+                            <Button variant="outline" onClick={() => setIsCreateOpen(false)}>
+                                Cancel
+                            </Button>
+                            <Button onClick={handleCreate}>Create</Button>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
             </CardContent>
         </Card>
     );

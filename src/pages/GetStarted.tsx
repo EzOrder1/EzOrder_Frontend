@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import api from "@/lib/api";
 import logo from "@/assets/logo.png";
 
 const cuisineOptions = [
@@ -44,6 +45,9 @@ const GetStarted = () => {
     email: "",
     phone: "",
     address: "",
+    city: "",
+    password: "",
+    confirmPassword: "",
     cuisine: "",
     openingHours: "",
     closingHours: "",
@@ -74,12 +78,21 @@ const GetStarted = () => {
     }
   };
 
+  const normalizePhone = (value: string) => {
+    const cleaned = value.replace(/[^\d+]/g, "");
+    if (cleaned.startsWith("+")) {
+      return cleaned;
+    }
+    return cleaned.length ? `+${cleaned}` : cleaned;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // Validation
     if (!formData.businessName.trim() || !formData.ownerName.trim() || 
-        !formData.email.trim() || !formData.phone.trim() || !formData.address.trim()) {
+        !formData.email.trim() || !formData.phone.trim() || !formData.address.trim() ||
+        !formData.city.trim() || !formData.password.trim() || !formData.confirmPassword.trim()) {
       toast({
         title: "Missing Fields",
         description: "Please fill in all required fields.",
@@ -107,12 +120,71 @@ const GetStarted = () => {
       return;
     }
 
+    if (formData.password.length < 6) {
+      toast({
+        title: "Weak Password",
+        description: "Password must be at least 6 characters.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      toast({
+        title: "Password Mismatch",
+        description: "Please make sure both passwords match.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      // POST /api/restaurant/register with formData and logoFile
-      
+      const phoneNumber = normalizePhone(formData.phone);
+
+      await api.post("/api/v1/auth/register", {
+        email: formData.email.trim(),
+        password: formData.password,
+        name: formData.ownerName.trim(),
+        phone_number: phoneNumber,
+        address: formData.address.trim(),
+        city: formData.city.trim(),
+        postal_code: null,
+      });
+
+      const loginResponse = await api.post("/api/v1/auth/login", {
+        email: formData.email.trim(),
+        password: formData.password,
+      });
+
+      const { access_token, refresh_token, user } = loginResponse.data;
+      localStorage.setItem("token", access_token);
+      if (refresh_token) {
+        localStorage.setItem("refresh_token", refresh_token);
+      }
+      localStorage.setItem("user", JSON.stringify(user));
+
+      const restaurantResponse = await api.post("/api/v1/restaurants/", {
+        name: formData.businessName.trim(),
+        address: formData.address.trim(),
+        phone_number: phoneNumber,
+        category: formData.cuisine || "General",
+        description: `Owner: ${formData.ownerName.trim()}`,
+        opening_hours: formData.openingHours,
+        closing_hours: formData.closingHours,
+        timezone: formData.timezone,
+      });
+
+      const restaurantId = restaurantResponse.data?.id;
+      if (logoFile && restaurantId) {
+        const payload = new FormData();
+        payload.append("file", logoFile);
+        await api.post(`/api/v1/restaurants/${restaurantId}/logo`, payload, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+      }
+
       setIsSuccess(true);
     } catch (error) {
       toast({
@@ -142,32 +214,8 @@ const GetStarted = () => {
                 Registration Successful!
               </h1>
               <p className="mt-4 text-muted-foreground">
-                Thank you for registering with ezOrder. We've sent a verification email to{" "}
-                <strong className="text-foreground">{formData.email}</strong>.
+                Set up your menu items in the admin dashboard.
               </p>
-              <div className="mt-6 card-elevated p-6">
-                <h3 className="font-heading font-semibold text-foreground">Next Steps:</h3>
-                <ol className="mt-4 space-y-3 text-left text-sm text-muted-foreground">
-                  <li className="flex items-start gap-3">
-                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
-                      1
-                    </span>
-                    Check your email and click the verification link
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
-                      2
-                    </span>
-                    Set up your menu items in the admin dashboard
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
-                      3
-                    </span>
-                    Share your WhatsApp ordering link with customers
-                  </li>
-                </ol>
-              </div>
               <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
                 <Button asChild>
                   <Link to="/">Back to Home</Link>
@@ -277,6 +325,20 @@ const GetStarted = () => {
                       required
                     />
                   </div>
+
+                  <div>
+                    <Label htmlFor="city">City *</Label>
+                    <Input
+                      id="city"
+                      name="city"
+                      value={formData.city}
+                      onChange={handleChange}
+                      placeholder="City"
+                      className="mt-1.5"
+                      maxLength={100}
+                      required
+                    />
+                  </div>
                 </div>
 
                 {/* Owner Info */}
@@ -334,6 +396,37 @@ const GetStarted = () => {
                     <p className="mt-1 text-xs text-muted-foreground">
                       This number will receive order notifications
                     </p>
+                  </div>
+
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div>
+                      <Label htmlFor="password">Password *</Label>
+                      <Input
+                        id="password"
+                        name="password"
+                        type="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        placeholder="Minimum 6 characters"
+                        className="mt-1.5"
+                        minLength={6}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="confirmPassword">Confirm Password *</Label>
+                      <Input
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        type="password"
+                        value={formData.confirmPassword}
+                        onChange={handleChange}
+                        placeholder="Re-enter password"
+                        className="mt-1.5"
+                        minLength={6}
+                        required
+                      />
+                    </div>
                   </div>
                 </div>
 

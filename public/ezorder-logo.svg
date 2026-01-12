@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="300" viewBox="0 0 1000 300" role="img" aria-label="ezOrder logo" class="ezorder-logo">
+  <title>ezOrder</title>
+  <style>
+    .ezorder-logo { font-family: "Space Grotesk", "Sora", "Segoe UI", Arial, sans-serif; cursor: pointer; }
+    .wordmark { font-size: 160px; font-weight: 700; letter-spacing: -3px; }
+    .ez { fill: #2F6B2F; }
+    .order { fill: #2C4E73; font-weight: 700; }
+    .bubble { fill: #2C4E73; }
+    .dot { fill: #8B5A2B; }
+    .bubble-group { transition: transform 200ms ease; }
+    .dot { transition: transform 200ms ease; }
+    .ezorder-logo:hover .bubble-group { transform: translateY(-4px); }
+    .ezorder-logo:hover .dot { transform: translateY(-2px); }
+    @media (prefers-reduced-motion: reduce) {
+      .bubble-group, .dot { transition: none; }
+    }
+  </style>
+
+  <text class="wordmark ez" x="40" y="205">ez</text>
+
+  <g class="bubble-group" transform="translate(230 20)">
+    <path class="bubble" fill-rule="evenodd" d="M90 20 A70 70 0 1 1 90 160 A70 70 0 1 1 90 20 Z M90 46 A44 44 0 1 0 90 134 A44 44 0 1 0 90 46 Z M46 140 L16 188 L72 160 Z" />
+    <circle class="dot" cx="70" cy="90" r="8" />
+    <circle class="dot" cx="90" cy="90" r="8" />
+    <circle class="dot" cx="110" cy="90" r="8" />
+  </g>
+
+  <text class="wordmark order" x="450" y="205">rder</text>
+</svg>
