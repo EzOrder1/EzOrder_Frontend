@@ -20,3 +20,26 @@ export interface DeliveryZone {
 }
 
 export type DeliveryZoneFormData = Omit<DeliveryZone, 'id' | 'created_at'>;
+
+export interface Restaurant {
+    id: string;
+    name: string;
+    description?: string;
+    address?: string;
+    phone_number?: string;
+    category?: string;
+    logo_path?: string | null;
+    is_active: boolean;
+    owner_id?: string;
+    created_at?: string;
+    updated_at?: string;
+}
+
+export interface RestaurantFormData {
+    name: string;
+    description: string;
+    address: string;
+    phone_number: string;
+    category: string;
+    is_active: boolean;
+}

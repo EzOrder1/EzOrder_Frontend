@@ -19,6 +19,7 @@ import { RiderList } from "@/components/admin/riders/RiderList";
 import { RiderForm } from "@/components/admin/riders/RiderForm";
 import { RiderSelectionModal } from "@/components/admin/riders/RiderSelectionModal";
 import { DeliveryZoneList } from "@/components/admin/zones/DeliveryZoneList";
+import { RestaurantSettingsModal, RestaurantSettingsForm } from "@/components/admin/settings/RestaurantSettingsModal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -91,6 +92,17 @@ type OrderListResponse = {
   total: number;
 };
 
+type RestaurantProfile = {
+  id: string;
+  name: string;
+  description?: string;
+  address?: string;
+  phone_number?: string;
+  category?: string;
+  logo_path?: string | null;
+  is_active: boolean;
+};
+
 const orderStatusOptions: { value: OrderStatus; label: string }[] = [
   { value: "confirmed", label: "Confirmed" },
   { value: "preparing", label: "Preparing" },
@@ -121,9 +133,11 @@ const AdminDashboard = () => {
   const [authorized, setAuthorized] = useState(false);
   const [authChecked, setAuthChecked] = useState(false);
   const [userName, setUserName] = useState<string>("Admin");
+  const [userRole, setUserRole] = useState<string>("admin");
   const [activeSection, setActiveSection] = useState("dashboard");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [statusFilter, setStatusFilter] = useState<OrderStatus | "all">("all");
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   // Menu State
   const [isMenuItemModalOpen, setIsMenuItemModalOpen] = useState(false);
@@ -201,6 +215,7 @@ const AdminDashboard = () => {
     try {
       const parsed = JSON.parse(storedUser);
       setUserName(parsed?.name || "Admin");
+      setUserRole(parsed?.role || "admin");
       if (parsed?.role === "admin" || parsed?.role === "staff") {
         setAuthorized(true);
       } else {
@@ -282,6 +297,15 @@ const AdminDashboard = () => {
     queryFn: async () => {
       const res = await api.get("/api/v1/menu/categories");
       return res.data as string[];
+    },
+    enabled: authorized,
+  });
+
+  const restaurantQuery = useQuery({
+    queryKey: ["restaurant-profile"],
+    queryFn: async () => {
+      const res = await api.get("/api/v1/restaurants/me");
+      return res.data as RestaurantProfile;
     },
     enabled: authorized,
   });
@@ -417,6 +441,34 @@ const AdminDashboard = () => {
       toast({ title: "Rider deleted" });
       queryClient.invalidateQueries({ queryKey: ["riders"] });
     },
+  });
+
+  const updateRestaurantMutation = useMutation({
+    mutationFn: async (payload: RestaurantSettingsForm) => {
+      const res = await api.put("/api/v1/restaurants/me", payload);
+      return res.data as RestaurantProfile;
+    },
+    onSuccess: () => {
+      toast({ title: "Restaurant updated" });
+      queryClient.invalidateQueries({ queryKey: ["restaurant-profile"] });
+    },
+    onError: () => toast({ title: "Failed to update restaurant", variant: "destructive" }),
+  });
+
+  const uploadLogoMutation = useMutation({
+    mutationFn: async (file: File) => {
+      const payload = new FormData();
+      payload.append("file", file);
+      const res = await api.post("/api/v1/restaurants/me/logo", payload, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      return res.data;
+    },
+    onSuccess: () => {
+      toast({ title: "Logo updated" });
+      queryClient.invalidateQueries({ queryKey: ["restaurant-profile"] });
+    },
+    onError: () => toast({ title: "Failed to upload logo", variant: "destructive" }),
   });
 
 
@@ -566,6 +618,14 @@ const AdminDashboard = () => {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
+                {userRole === "admin" && (
+                  <>
+                    <DropdownMenuItem onClick={() => setIsSettingsOpen(true)}>
+                      Settings
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                  </>
+                )}
                 <DropdownMenuItem onClick={() => {
                   localStorage.removeItem("token");
                   localStorage.removeItem("refresh_token");
@@ -726,6 +786,16 @@ const AdminDashboard = () => {
             onOpenChange={setIsRiderSelectionOpen}
             riders={ridersQuery.data || []}
             onSelect={handleRiderSelection}
+          />
+          <RestaurantSettingsModal
+            open={isSettingsOpen}
+            onOpenChange={setIsSettingsOpen}
+            restaurant={restaurantQuery.data}
+            onSave={(data) => updateRestaurantMutation.mutate(data)}
+            onUploadLogo={(file) => uploadLogoMutation.mutate(file)}
+            isSaving={updateRestaurantMutation.isPending}
+            isUploading={uploadLogoMutation.isPending}
+            canEdit={userRole === "admin"}
           />
         </main>
       </div >

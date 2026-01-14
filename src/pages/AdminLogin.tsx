@@ -59,10 +59,9 @@ const AdminLogin = () => {
         description: "Redirecting to dashboard...",
       });
 
-      // Determine redirection based on role if needed, or default to dashboard
-      // For now, let's assume there's a dashboard route or simply home
-      // Checking if there is a dashboard route... if not, redirect to index
-      navigate("/admin/dashboard");
+      const destination =
+        user?.role === "superadmin" ? "/superadmin/dashboard" : "/admin/dashboard";
+      navigate(destination);
 
     } catch (error: any) {
       console.error("Login error:", error);

@@ -13,17 +13,26 @@ const navLinks = [
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [adminNav, setAdminNav] = useState({ href: "/admin/login", label: "Admin" });
   const location = useLocation();
 
   useEffect(() => {
     try {
       const stored = localStorage.getItem("user");
-      if (!stored) return;
+      if (!stored) {
+        setAdminNav({ href: "/admin/login", label: "Admin" });
+        return;
+      }
       const parsed = JSON.parse(stored);
-      setIsAdmin(parsed?.role === "admin" || parsed?.role === "staff");
+      if (parsed?.role === "superadmin") {
+        setAdminNav({ href: "/superadmin/dashboard", label: "Super Admin" });
+      } else if (parsed?.role === "admin" || parsed?.role === "staff") {
+        setAdminNav({ href: "/admin/dashboard", label: "Dashboard" });
+      } else {
+        setAdminNav({ href: "/admin/login", label: "Admin" });
+      }
     } catch {
-      setIsAdmin(false);
+      setAdminNav({ href: "/admin/login", label: "Admin" });
     }
   }, [location.pathname]);
 
@@ -69,11 +78,11 @@ export function Navbar() {
         {/* Desktop CTA */}
         <div className="hidden items-center gap-3 md:flex">
           <Link
-            to={isAdmin ? "/admin/dashboard" : "/admin/login"}
+            to={adminNav.href}
             className="flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
           >
             <LogIn className="h-4 w-4" />
-            {isAdmin ? "Dashboard" : "Admin"}
+            {adminNav.label}
           </Link>
           <Button asChild variant="nav" size="sm">
             <Link to="/get-started">Get Started</Link>
@@ -118,12 +127,12 @@ export function Navbar() {
             </a>
             <hr className="border-border" />
             <Link
-              to={isAdmin ? "/admin/dashboard" : "/admin/login"}
+              to={adminNav.href}
               onClick={() => setIsOpen(false)}
               className="flex items-center gap-2 py-2 text-sm font-medium text-muted-foreground"
             >
               <LogIn className="h-4 w-4" />
-              {isAdmin ? "Dashboard" : "Admin Login"}
+              {adminNav.label === "Admin" ? "Admin Login" : adminNav.label}
             </Link>
             <Button asChild variant="nav" className="w-full">
               <Link to="/get-started" onClick={() => setIsOpen(false)}>
