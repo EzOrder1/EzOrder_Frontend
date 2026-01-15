@@ -43,6 +43,12 @@ export interface Order {
     total: number;
     status: OrderStatus;
     created_at: string;
+    delivery_address?: string;
+    delivery_city?: string;
+    delivery_location?: {
+        latitude: number;
+        longitude: number;
+    };
 }
 
 interface OrdersTableProps {
@@ -124,6 +130,7 @@ export function OrdersTable({
                             )}
                             <TableHead>Order #</TableHead>
                             <TableHead>Customer</TableHead>
+                            <TableHead className="max-w-[200px]">Address</TableHead>
                             <TableHead>Total</TableHead>
                             <TableHead>Status</TableHead>
                             <TableHead>Action</TableHead>
@@ -133,7 +140,7 @@ export function OrdersTable({
                         {orders.length === 0 ? (
                             <TableRow>
                                 <TableCell
-                                    colSpan={selectable ? 6 : 5}
+                                    colSpan={selectable ? 7 : 6}
                                     className="h-24 text-center text-muted-foreground"
                                 >
                                     No orders found.
@@ -166,6 +173,10 @@ export function OrdersTable({
                                                 {order.phone_number}
                                             </span>
                                         </div>
+                                    </TableCell>
+                                    <TableCell className="max-w-[200px] truncate text-sm text-muted-foreground">
+                                        {order.delivery_address || "-"}
+                                        {order.delivery_city ? `, ${order.delivery_city}` : ""}
                                     </TableCell>
                                     <TableCell className="font-medium">
                                         {currency(order.total)}

@@ -41,6 +41,12 @@ interface Order {
     total: number;
     status: OrderStatus;
     created_at: string;
+    delivery_address?: string;
+    delivery_city?: string;
+    delivery_location?: {
+        latitude: number;
+        longitude: number;
+    };
 }
 
 interface OrderDetailsModalProps {
@@ -77,10 +83,14 @@ export function OrderDetailsModal({
         });
     };
 
+    const hasLocation = order.delivery_location &&
+        order.delivery_location.latitude !== undefined &&
+        order.delivery_location.longitude !== undefined;
+
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="max-w-3xl overflow-hidden p-0">
-                <DialogHeader className="bg-slate-50 px-6 py-4 border-b">
+            <DialogContent className="max-w-3xl p-0 max-h-[90vh] flex flex-col gap-0">
+                <DialogHeader className="bg-slate-50 px-6 py-4 border-b flex-shrink-0">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
                             <DialogTitle className="text-lg font-bold">
@@ -100,74 +110,108 @@ export function OrderDetailsModal({
                     </div>
                 </DialogHeader>
 
-                <div className="grid gap-6 p-6 md:grid-cols-2">
-                    {/* Customer Details */}
-                    <div className="space-y-4">
-                        <h3 className="flex items-center gap-2 font-semibold">
-                            <User className="h-4 w-4" /> Customer Details
-                        </h3>
-                        <div className="rounded-lg border bg-slate-50 p-4 text-sm">
-                            <div className="grid grid-cols-[80px_1fr] gap-2">
-                                <span className="text-muted-foreground">Name:</span>
-                                <span className="font-medium">{order.user_name}</span>
+                <div className="flex-1 overflow-y-auto">
+                    <div className="grid gap-6 p-6 md:grid-cols-2">
+                        {/* Customer Details */}
+                        <div className="space-y-4">
+                            <h3 className="flex items-center gap-2 font-semibold">
+                                <User className="h-4 w-4" /> Customer & Delivery
+                            </h3>
+                            <div className="rounded-lg border bg-slate-50 p-4 text-sm h-full">
+                                <div className="grid grid-cols-[80px_1fr] gap-2">
+                                    <span className="text-muted-foreground">Name:</span>
+                                    <span className="font-medium">{order.user_name}</span>
 
-                                <span className="text-muted-foreground">Phone:</span>
-                                <div className="flex items-center gap-1 font-medium">
-                                    <Phone className="h-3 w-3 text-muted-foreground" />
-                                    {order.phone_number}
+                                    <span className="text-muted-foreground">Phone:</span>
+                                    <div className="flex items-center gap-1 font-medium">
+                                        <Phone className="h-3 w-3 text-muted-foreground" />
+                                        {order.phone_number}
+                                    </div>
+
+                                    <span className="text-muted-foreground">Address:</span>
+                                    <span className="font-medium">
+                                        {order.delivery_address || "-"}
+                                        {order.delivery_city ? `, ${order.delivery_city}` : ""}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Order Summary */}
+                        <div className="space-y-4">
+                            <h3 className="flex items-center gap-2 font-semibold">
+                                <Package className="h-4 w-4" /> Order Summary
+                            </h3>
+                            <div className="rounded-lg border bg-slate-50 p-4 text-sm h-full">
+                                <div className="grid grid-cols-[80px_1fr] gap-2">
+                                    <span className="text-muted-foreground">Items:</span>
+                                    <span className="font-medium">{order.items.reduce((acc, item) => acc + item.quantity, 0)} items</span>
+
+                                    <span className="text-muted-foreground">Total:</span>
+                                    <span className="text-lg font-bold text-emerald-600">{currency(order.total)}</span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    {/* Order Summary */}
-                    <div className="space-y-4">
-                        <h3 className="flex items-center gap-2 font-semibold">
-                            <Package className="h-4 w-4" /> Order Summary
-                        </h3>
-                        <div className="rounded-lg border bg-slate-50 p-4 text-sm">
-                            <div className="grid grid-cols-[80px_1fr] gap-2">
-                                <span className="text-muted-foreground">Items:</span>
-                                <span className="font-medium">{order.items.reduce((acc, item) => acc + item.quantity, 0)} items</span>
+                    <div className="px-6 pb-6">
+                        <h3 className="mb-4 font-semibold">Order Items</h3>
+                        <div className="rounded-lg border">
+                            <Table>
+                                <TableHeader>
+                                    <TableRow className="bg-slate-50">
+                                        <TableHead className="w-[50%]">Item</TableHead>
+                                        <TableHead className="text-center">Qty</TableHead>
+                                        <TableHead className="text-right">Price</TableHead>
+                                        <TableHead className="text-right">Subtotal</TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {order.items.map((item, index) => (
+                                        <TableRow key={index}>
+                                            <TableCell className="font-medium">{item.name}</TableCell>
+                                            <TableCell className="text-center">{item.quantity}</TableCell>
+                                            <TableCell className="text-right">{currency(item.price)}</TableCell>
+                                            <TableCell className="text-right font-medium">{currency(item.subtotal)}</TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </div>
 
-                                <span className="text-muted-foreground">Total:</span>
-                                <span className="text-lg font-bold text-emerald-600">{currency(order.total)}</span>
+                        <div className="mt-4 flex justify-end">
+                            <div className="space-y-1 text-right">
+                                <div className="text-sm text-muted-foreground">Total Amount</div>
+                                <div className="text-2xl font-bold">{currency(order.total)}</div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div className="px-6 pb-6">
-                    <h3 className="mb-4 font-semibold">Order Items</h3>
-                    <div className="rounded-lg border">
-                        <Table>
-                            <TableHeader>
-                                <TableRow className="bg-slate-50">
-                                    <TableHead className="w-[50%]">Item</TableHead>
-                                    <TableHead className="text-center">Qty</TableHead>
-                                    <TableHead className="text-right">Price</TableHead>
-                                    <TableHead className="text-right">Subtotal</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {order.items.map((item, index) => (
-                                    <TableRow key={index}>
-                                        <TableCell className="font-medium">{item.name}</TableCell>
-                                        <TableCell className="text-center">{item.quantity}</TableCell>
-                                        <TableCell className="text-right">{currency(item.price)}</TableCell>
-                                        <TableCell className="text-right font-medium">{currency(item.subtotal)}</TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </div>
-
-                    <div className="mt-4 flex justify-end">
-                        <div className="space-y-1 text-right">
-                            <div className="text-sm text-muted-foreground">Total Amount</div>
-                            <div className="text-2xl font-bold">{currency(order.total)}</div>
+                    {/* Map Location - Moved to Bottom */}
+                    {hasLocation && (
+                        <div className="px-6 pb-6 pt-0">
+                            <div className="rounded-xl border shadow-sm overflow-hidden bg-white">
+                                <div className="p-3 bg-slate-50 border-b flex items-center gap-2">
+                                    <span className="text-sm font-medium flex items-center gap-2">
+                                        📍 Delivery Location
+                                    </span>
+                                </div>
+                                <div className="aspect-video w-full relative bg-slate-100">
+                                    <iframe
+                                        width="100%"
+                                        height="100%"
+                                        className="absolute inset-0"
+                                        frameBorder="0"
+                                        scrolling="no"
+                                        marginHeight={0}
+                                        marginWidth={0}
+                                        src={`https://maps.google.com/maps?q=${order.delivery_location?.latitude},${order.delivery_location?.longitude}&z=15&output=embed`}
+                                        title="Delivery Location"
+                                    />
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </div>
             </DialogContent>
         </Dialog>
